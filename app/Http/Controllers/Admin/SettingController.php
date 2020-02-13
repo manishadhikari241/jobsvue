@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Model\Settings;
 use Illuminate\Http\Request;
 use App\General\Setting;
 
@@ -12,12 +13,14 @@ class SettingController extends DashboardController
     public function setting(Request $request)
     {
         if ($request->isMethod('get')) {
-            return view($this->setting_path . 'index');
+            $data['site_title'] = $this->getConfiguration('site_title');
+            $data['site_description'] = 'as';
+            return response()->json($data);
         }
         if ($request->isMethod('post')) {
             $save = $this->save_settings($request);
             if ($save) {
-                return redirect()->back()->with('success', 'Settings saved successfully');
+                return response()->json(['status' => 'success', 'message' => 'Settings Saved Successfully']);
             }
         }
         return false;

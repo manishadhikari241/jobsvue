@@ -47,6 +47,7 @@ class CategoryController extends DashboardController
      */
     public function create()
     {
+        dd('pl');
     }
 
     /**
@@ -94,6 +95,9 @@ class CategoryController extends DashboardController
         $categories = Category::whereNotIn('id', [$category->id])->get();
         $parent_category = Category::where('id', $category->parent_id)->first();
 
+        if ($parent_category== null){
+
+        }
         return response()->json([
             'category' => $category,
             'categories' => $categories,
@@ -113,7 +117,7 @@ class CategoryController extends DashboardController
     public function update(Request $request, $id)
     {
         $request->validate([
-            'category_name' => 'required|min:2|max:20|unique:categories,category_name,'.$id
+            'category_name' => 'required|min:2|max:20|unique:categories,category_name,' . $id
         ]);
         try {
             $this->category->update_product($request, $id);
