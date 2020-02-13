@@ -1,3 +1,5 @@
+import settings from "./store/modules/settings";
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -6,30 +8,43 @@ window.Event = new Vue();
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VuejsDialog from 'vuejs-dialog';
-import Loading from 'vue-loading-overlay';
 import routes from './routes/routes';
 import vuetify from './vuetify/vuetify';
-// Import stylesheet
-import 'vue-loading-overlay/dist/vue-loading.css';
+import {store} from './store/store';
+import RichTextEditor from 'rich-text-editor-vuetify';
 
-Vue.use(Loading);
+
+Vue.use(RichTextEditor);
 Vue.use(VuejsDialog);
 Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
 });
+router.beforeResolve((to, from, next) => {
+    // If this isn't an initial page load.
+    if (to.name) {
+        // Start the route progress bar.
+        NProgress.start()
+    }
+    next()
+});
 
-//
-// Vue.component('dashboard-component', require('./components/DashboardComponent.vue').default);
-// Vue.component('category-component', require('./components/CategoryComponent.vue').default);
-// Vue.component('edit-category-modal', require('./components/CategoryEditModal.vue').default);
-// Vue.component('setting-component', require('./components/Settings/SettingComponent').default);
+router.afterEach((to, from) => {
+    // Complete the animation of the route progress bar.
+    NProgress.done()
+});
 Vue.component('app', require('./components/app').default);
 
-const app = new Vue({
-    el: '#app',
-    router,
-    vuetify
+Vue.component('dashboard-component', require('./components/DashboardComponent.vue').default);
+Vue.component('category-component', require('./components/Category/CategoryComponent.vue').default);
+Vue.component('setting-component', require('./components/Settings/SettingComponent').default);
+Vue.component('login', require('./components/Login/LoginComponent').default);
+Vue.component('location-datatable', require('./components/PostJobs/LocationDatatableComponent').default);
 
+
+new Vue({
+    router,
+    vuetify,
+    store,
 }).$mount('#app');
