@@ -25,7 +25,8 @@ class JobsCategory extends FormRequest
     {
 
             return [
-                'category_name' => 'required|min:2|max:20|unique:categories'
+                'category_name' => 'required|min:2|max:20|unique:categories',
+                'status'=>'required'
             ];
 
     }

@@ -15,12 +15,16 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
+
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper" id="app">
-<app></app>
+    <router-view></router-view>
+
+    {{--<app></app>--}}
 {{--@include('admin.layouts.header')--}}
 {{--@include('admin.layouts.sidebar')--}}
 {{--<!-- Content Wrapper. Contains page content -->--}}
@@ -35,7 +39,10 @@
     {{--</aside>--}}
 </div>
 <!-- ./wrapper -->
+<script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+
 <script src="{{asset('js/app.js')}}"></script>
+
 
 @stack('extra_scripts')
 

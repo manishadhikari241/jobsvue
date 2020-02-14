@@ -18,7 +18,7 @@ class EloquentJobsCategoryRepository extends AbstractRepository implements JobsC
     public function store($request)
     {
         $data['category_name'] = $request->category_name;
-        $data['parent_id'] = $request->parent_id;
+        $data['parent_id'] = $request->parent_id == null ? 0 : $request->parent_id;
         $data['status'] = $request->status;
         $create = Category::create($data);
         return $create;
@@ -28,7 +28,7 @@ class EloquentJobsCategoryRepository extends AbstractRepository implements JobsC
     {
         $find = $this->entity()::findorfail($id);
         $data['category_name'] = $request->category_name;
-        $data['parent_id'] = $request->parent_id;
+        $data['parent_id'] = $request->parent_id == null ? 0 : $request->parent_id;
         $data['status'] = $request->status;
         $update = $find->update($data);
         return $update;

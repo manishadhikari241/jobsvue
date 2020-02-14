@@ -47162,13 +47162,3 @@ button.toast-close-button {
   }
 }
 
-.router-link-active {
-  opacity: 1;
-  visibility: visible;
-  border-left-color: #4DB6AC;
-  margin: 10px;
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s;
-  background-color: blue;
-}
-

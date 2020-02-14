@@ -11,19 +11,19 @@
 |
 */
 
-//Route::get('admin/{any}', 'SpaController@index')->where('any', '.*');
 
-Route::get('/admin/{vue_capture?}', function () {
-    return view('admin.dashboard');
-})->where('vue_capture', '[\/\w\.-]*');
-
-Route::group(['namespace' => 'Admin', 'prefix' => 'admins', 'as' => 'admin.'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
     Route::group(['prefix' => 'employer', 'EmployerController@index'], function () {
         Route::get('/', 'EmployerController@index')->name('employer.index');
     });
 
     Route::resource('category', 'CategoryController');
-    Route::any('/setting', 'SettingController@setting')->name('setting');
+    Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
 
 });
+
+
+Route::get('/{vue_capture}', function () {
+    return view('admin.dashboard');
+})->where('vue_capture', '[\/\w\.-]*');
