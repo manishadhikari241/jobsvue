@@ -24,19 +24,6 @@
 <div class="wrapper" id="app">
     <router-view></router-view>
 
-    {{--<app></app>--}}
-{{--@include('admin.layouts.header')--}}
-{{--@include('admin.layouts.sidebar')--}}
-{{--<!-- Content Wrapper. Contains page content -->--}}
-    {{--<div class="content-wrapper">--}}
-        {{--<router-view></router-view>--}}
-
-    {{--</div>--}}
-    {{--@include('admin.layouts.footer')--}}
-
-    {{--<aside class="control-sidebar control-sidebar-dark">--}}
-        {{--<!-- Control sidebar content goes here -->--}}
-    {{--</aside>--}}
 </div>
 <!-- ./wrapper -->
 <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>

@@ -35,7 +35,7 @@ const actions = {
             data: payloads,
             url: '/admin/setting'
         }).then(function (response) {
-                commit('set_load');
+            commit('set_load');
 
         })
     },
