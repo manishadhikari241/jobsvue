@@ -2,12 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\information\AboutRequest;
 use App\Model\About;
+use App\Repositories\Contracts\AboutRepositoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AboutController extends Controller
+
+
 {
+
+    private $about = '';
+
+    public function __construct(AboutRepositoryRepository $about)
+    {
+        $this->about = $about;
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +28,7 @@ class AboutController extends Controller
      */
     public function index()
     {
-        return response()->json(About::get(),200);
+        return response()->json(About::get(), 200);
     }
 
     /**
@@ -31,21 +44,15 @@ class AboutController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $rules= [
-            'summary' => 'required'
-        ];
-        $validator = Validator::make($request->all(), $rules);
 
-        if($validator->fails()){
-            return response()->json($validator->errors(), 400);
-        }
-         $about = About::create($request->all());
-         return response()->json($about, 201);
+
+        $about = About::updateorcreate(['id' => 1], ['summary' => $request->summary]);
+        return response()->json($about, 201);
 
 
     }
@@ -53,7 +60,7 @@ class AboutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -64,7 +71,7 @@ class AboutController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -75,8 +82,8 @@ class AboutController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -87,7 +94,7 @@ class AboutController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
