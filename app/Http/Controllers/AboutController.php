@@ -49,12 +49,8 @@ class AboutController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $about = About::updateorcreate(['id' => 1], ['summary' => $request->summary]);
-        return response()->json($about, 201);
-
-
+        return response()->json($about, 200);
     }
 
     /**
