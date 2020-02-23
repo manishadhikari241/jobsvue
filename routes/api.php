@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    Route::group(['prefix' => 'employer', 'EmployerController@index'], function () {
+        Route::get('/', 'EmployerController@index')->name('employer.index');
+    });
+
+    Route::resource('category', 'CategoryController');
+    Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
+
+});
+
