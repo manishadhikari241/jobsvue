@@ -60,6 +60,7 @@ class CategoryController extends DashboardController
     {
 
         try {
+            dd('p');
             $this->category->store($request);
 
         } catch (\Exception $exception) {
@@ -95,7 +96,7 @@ class CategoryController extends DashboardController
         $categories = Category::whereNotIn('id', [$category->id])->get();
         $parent_category = Category::where('id', $category->parent_id)->first();
 
-        if ($parent_category== null){
+        if ($parent_category == null) {
 
         }
         return response()->json([

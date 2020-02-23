@@ -28,3 +28,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
 });
 
+
+Route::apiResource('about', 'AboutController');
+
