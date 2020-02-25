@@ -2,7 +2,7 @@
     <v-data-table
             :headers="headers"
             :items="desserts"
-            :search="a"
+            :search="search"
             class="elevation-1">
         <template v-slot:item.actions="{item}">
             <v-icon dark small v-on:click="">fa fa-edit</v-icon>
@@ -14,13 +14,13 @@
 
 <script>
     export default {
-        name: "LocationDatatableComponent",
         data() {
             return {
+                search:'',
                 headers: [
 
                     {
-                        text: 'Locations',
+                        text: 'Job Level',
                         align: 'left',
                         sortable: false,
                         value: 'location'

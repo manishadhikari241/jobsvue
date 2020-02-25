@@ -21,3 +21,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('about', 'AboutController');
 
+Route::group(['namespace' => 'Api'], function () {
+
+    Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
+        Route::post('register-user', 'RegisterController@register')->name('register');
+
+    });
+
+});

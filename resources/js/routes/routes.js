@@ -20,7 +20,7 @@ const routes = [
             {
                 path:'locations',
                 name:'locations',
-                component:require('../components/PostJobs/LocationsComponent').default
+                component:require('../components/PostJobs/JobLevelComponent').default
             },
             {
                 path: 'postjobs',
