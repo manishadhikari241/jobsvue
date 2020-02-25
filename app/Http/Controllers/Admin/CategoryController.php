@@ -58,9 +58,7 @@ class CategoryController extends DashboardController
      */
     public function store(JobsCategory $request)
     {
-
         try {
-            dd('p');
             $this->category->store($request);
 
         } catch (\Exception $exception) {
@@ -153,6 +151,5 @@ class CategoryController extends DashboardController
             'status' => 'success',
             'message' => 'Successfully Deleted'
         ], 200);
-
     }
 }

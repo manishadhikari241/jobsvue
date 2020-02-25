@@ -26,8 +26,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::resource('category', 'CategoryController');
     Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
 
+    Route::apiResource('joblevel','JoblevelController');
+    Route::apiResource('jobtype','JobtypeController');
+
+
 });
 
 
 Route::apiResource('about', 'AboutController');
-
