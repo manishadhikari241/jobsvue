@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Auths;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\Authentication\RegisterUser;
 use App\Repositories\Contracts\LoginRegisterRepository;
-use App\Repositories\Eloquent\EloquentLoginRegisterRepository;
-use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -32,5 +32,4 @@ class RegisterController extends Controller
     {
 
     }
-
 }

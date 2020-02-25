@@ -17,15 +17,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    Route::group(['prefix' => 'employer', 'EmployerController@index'], function () {
+        Route::get('/', 'EmployerController@index')->name('employer.index');
+    });
+
+
+    Route::resource('category', 'CategoryController');
+    Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
+
+    Route::apiResource('joblevel', 'JoblevelController');
+    Route::apiResource('jobtype', 'JobtypeController');
+
+});
+Route::group(['namespace' => 'Auths', 'as' => 'auth.'], function () {
+    Route::post('register-users', 'RegisterController@register')->name('register');
+});
 
 
 Route::apiResource('about', 'AboutController');
-
-Route::group(['namespace' => 'Api'], function () {
-
-    Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
-        Route::post('register-user', 'RegisterController@register')->name('register');
-
-    });
-
-});

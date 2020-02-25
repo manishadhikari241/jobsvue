@@ -14,7 +14,7 @@ class SettingController extends DashboardController
     {
         if ($request->isMethod('get')) {
             $data['site_title'] = $this->getConfiguration('site_title');
-            $data['site_description'] = 'as';
+            $data['site_description'] = $this->getConfiguration('site_description');
             return response()->json($data);
         }
         if ($request->isMethod('post')) {
