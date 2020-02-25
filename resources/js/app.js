@@ -40,7 +40,7 @@ Vue.component('dashboard-component', require('./components/DashboardComponent.vu
 Vue.component('category-component', require('./components/Category/CategoryComponent.vue').default);
 Vue.component('setting-component', require('./components/Settings/SettingComponent').default);
 Vue.component('login', require('./components/Login/LoginComponent').default);
-Vue.component('location-datatable', require('./components/PostJobs/LocationDatatableComponent').default);
+Vue.component('jobs-level-datatable', require('./components/PostJobs/JobLevelDatatableComponent').default);
 
 
 new Vue({

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -8,9 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-
-
-class JobsCategory extends FormRequest
+class RegisterUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,10 +28,34 @@ class JobsCategory extends FormRequest
     public function rules()
     {
         return [
-            'category_name' => 'required|min:2|max:20|unique:categories',
-            'status' => 'required'
+            'username' => 'required|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|numeric|min:9',
+            'password' => 'min:6|required_with:password_confirmation|same:password_confirmation'
+
         ];
     }
+
+    /**
+     * generating custom validation messages
+     */
+
+    public function messages()
+    {
+        return [
+            'username.required' => 'Please Enter Your Username',
+        ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
