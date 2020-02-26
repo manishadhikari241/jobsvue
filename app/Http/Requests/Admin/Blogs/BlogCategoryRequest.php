@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Jobs;
+namespace App\Http\Requests\Admin\Blogs;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class JoblevelRequest extends FormRequest
+class BlogCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class JoblevelRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_level'=>'required|unique:joblevels,job_level_name',
+            'blog_category_name'=>'required|unique:blog_categories,blog_category_name',
             'status'=>'required'
         ];
     }

@@ -73,7 +73,12 @@ class JobtypeController extends DashboardController
      */
     public function show($id)
     {
-        //
+        $job_type=$this->type->getbyId($id);
+
+        return response()->json([
+            'status'=>'success',
+            'job_type'=>$job_type,
+        ],200);
     }
 
     /**
@@ -97,8 +102,7 @@ class JobtypeController extends DashboardController
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            Rule::unique('jobtypes')->ignore($id),
-        'job_type_name'=>'required',
+        'job_type_name'=>'required|unique:jobtypes,job_type_name,'.$id.',job_type_id',
             'status'=>'required'
         ]);
         if ($validator->fails()) {

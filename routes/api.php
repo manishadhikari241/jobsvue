@@ -28,9 +28,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
     Route::apiResource('joblevel','JoblevelController');
     Route::apiResource('jobtype','JobtypeController');
-
+    Route::apiResource('blogcategory','BlogCategoryController');
 
 });
-
 
 Route::apiResource('about', 'AboutController');
