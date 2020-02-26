@@ -4,17 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-<<<<<<< HEAD
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
-=======
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
->>>>>>> master
+
 
 
 class JobsCategory extends FormRequest
@@ -36,21 +30,15 @@ class JobsCategory extends FormRequest
      */
     public function rules()
     {
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+
         return [
             'category_name' => 'required|min:2|max:20|unique:categories',
             'status' => 'required'
         ];
-<<<<<<< HEAD
 
     }
 
-=======
-    }
->>>>>>> master
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();

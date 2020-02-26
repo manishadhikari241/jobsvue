@@ -23,6 +23,11 @@ const routes = [
                 component:require('../components/PostJobs/JobLevelComponent').default
             },
             {
+                path:'jobTypes',
+                name:'jobTypes',
+                component:require('../components/PostJobs/JobTypes/JobTypesComponent').default
+            },
+            {
                 path: 'postjobs',
                 name: 'postjobs',
                 component: require('../components/PostJobs/PostJobsComponent').default

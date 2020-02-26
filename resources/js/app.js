@@ -41,6 +41,7 @@ Vue.component('category-component', require('./components/Category/CategoryCompo
 Vue.component('setting-component', require('./components/Settings/SettingComponent').default);
 Vue.component('login', require('./components/Login/LoginComponent').default);
 Vue.component('jobs-level-datatable', require('./components/PostJobs/JobLevelDatatableComponent').default);
+Vue.component('job-type-datatable',require('./components/PostJobs/JobTypes/JobTypesDatatableComponent').default);
 
 
 new Vue({
