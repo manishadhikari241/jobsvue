@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Jobs\JoblevelRequest;
-use App\Model\Joblevel;
-use App\Repositories\Eloquent\EloquentJoblevelRepository;
-use Illuminate\Contracts\Validation\Validator;
+use App\Http\Requests\Admin\Blogs\BlogCategoryRequest;
+use App\Repositories\Eloquent\EloquentBlogCategoryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class JoblevelController extends DashboardController
+class BlogCategoryController extends DashboardController
 {
     /**
      * Display a listing of the resource.
@@ -18,21 +17,20 @@ class JoblevelController extends DashboardController
      * @return \Illuminate\Http\Response
      */
 
-    protected $level;
+    protected $category;
 
-    public function __construct(EloquentJoblevelRepository $level)
+    public function __construct(EloquentBlogCategoryRepository $category)
     {
         parent::__construct();
-        $this->level=$level;
+        $this->category=$category;
     }
 
     public function index()
     {
-        $job_level=$this->level->getAll();
-
+        $index=$this->category->getAll();
         return response()->json([
-           'status' =>'success',
-            'job_level'=>$job_level
+           'status'=>'success',
+           'blog_category'=>$index,
         ],200);
     }
 
@@ -52,17 +50,17 @@ class JoblevelController extends DashboardController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(JoblevelRequest $request)
+    public function store(BlogCategoryRequest $request)
     {
-
-        try {
-            $this->level->store($request);
-        } catch (\Exception $exception) {
-            throw new  \PDOException('Error in saving Joblevel' . $exception->getMessage());
+        try{
+            $this->category->store($request);
+        }
+        catch (\Exception $exception) {
+            throw new  \PDOException('Error in saving BlogCategory' . $exception->getMessage());
         } finally {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Job level Successfully Added'
+                'message' => 'Blog Category Successfully Added'
             ], 200);
         }
     }
@@ -86,7 +84,7 @@ class JoblevelController extends DashboardController
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -98,30 +96,30 @@ class JoblevelController extends DashboardController
      */
     public function update(Request $request, $id)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'job_level'=>'required|unique:joblevels,job_level_name,'.$id.',job_level_id',
+        $validator=Validator::make($request->all(),[
+            'blog_category_name'=>'required|unique:blog_categories,blog_category_name,'.$id.',blog_category_id',
             'status'=>'required'
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors()->all();
+        if ($validator->fails())
+        {
+            $errors=$validator->errors()->all();
             return response()->json([
-                "message" => "Validation Error",
-                "title" => $errors
+               'message'=>'Validation errors',
+               'title'=>$errors,
             ],422);
         }
-
-            try {
-                $this->level->update_joblevel($request, $id);
-
-            } catch (\Exception $exception) {
-                throw new  \PDOException('Error in updating Joblevel' . $exception->getMessage());
-            }
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Updated Successfully',
-            ], 200);
+        try{
+            $this->category->update($request,$id);
         }
-
+        catch (\Exception $exception)
+        {
+            throw new \PDOException('Error in updating BlogCategory'.$exception->getMessage());
+        }
+        return response()->json([
+           'status'=>'success',
+           'message'=>'updated successfully',
+        ],200);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -131,14 +129,16 @@ class JoblevelController extends DashboardController
      */
     public function destroy($id)
     {
-        try {
-            $this->level->delete_joblevel($id);
-        } catch (\Exception $exception) {
-            throw new  \PDOException('Error in deleting Joblevel' . $exception->getMessage());
+        try{
+            $this->category->delete($id);
+        }
+        catch (\Exception $exception)
+        {
+            throw new \PDOException('Error in deleting BlogCategory'.$exception->getMessage());
         }
         return response()->json([
-            'status' => 'success',
-            'message' => 'Deleted successfully',
-        ], 200);
+            'status'=>'success',
+            'message'=>'deleted successfully',
+        ],200);
     }
 }

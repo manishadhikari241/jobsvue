@@ -27,13 +27,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::resource('category', 'CategoryController');
     Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
 
-    Route::apiResource('joblevel', 'JoblevelController');
-    Route::apiResource('jobtype', 'JobtypeController');
+
+    Route::apiResource('joblevel','JoblevelController');
+    Route::apiResource('jobtype','JobtypeController');
+    Route::apiResource('blogcategory','BlogCategoryController');
 
 });
 Route::group(['namespace' => 'Auths', 'as' => 'auth.'], function () {
     Route::post('register-users', 'RegisterController@register')->name('register');
 });
-
 
 Route::apiResource('about', 'AboutController');

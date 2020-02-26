@@ -20,6 +20,13 @@ class EloquentJobtypeRepository extends AbstractRepository implements JobtypeRep
         return $job_type;
     }
 
+    public function getbyId($id)
+    {
+        $jobtype=$this->entity()::find($id);
+
+        return $jobtype;
+    }
+
     public function store($request)
     {
           $data['job_type_name']=$request->job_type_name;
@@ -43,4 +50,6 @@ class EloquentJobtypeRepository extends AbstractRepository implements JobtypeRep
         $del=$find->delete();
         return $del;
     }
+
+
 }
