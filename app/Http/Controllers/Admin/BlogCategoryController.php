@@ -73,7 +73,12 @@ class BlogCategoryController extends DashboardController
      */
     public function show($id)
     {
-        //
+        $blog_category=$this->category->getbyId($id);
+
+        return response()->json([
+            'status'=>'success',
+            'blog_category'=>$blog_category,
+        ],200);
     }
 
     /**
@@ -104,8 +109,7 @@ class BlogCategoryController extends DashboardController
         {
             $errors=$validator->errors()->all();
             return response()->json([
-               'message'=>'Validation errors',
-               'title'=>$errors,
+               'errors'=>$errors,
             ],422);
         }
         try{
