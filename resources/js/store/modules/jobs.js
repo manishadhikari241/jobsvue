@@ -2,7 +2,8 @@ import axios from "axios";
 
 const state = {
     dialog: false,
-    jobtypes: ''
+    jobtypes: '',
+    editjobtypes: ''
 
 };
 const getters = {};
@@ -23,7 +24,11 @@ const mutations = {
     get_job_types(state, payloads) {
         state.jobtypes = payloads.data;
         state.dialog = false;
+    },
+    edit_job_types(state, payloads) {
+        state.editjobtypes = payloads.data.job_type
     }
+
 };
 
 const actions = {
@@ -82,7 +87,30 @@ const actions = {
         })
     },
     editJobTypes({commit}, payloads) {
+        axios({
+            method: 'GET',
+            url: `/api/admin/jobtype/${payloads}`
+        }).then(function (response) {
+            commit('edit_job_types', response);
+        });
+    },
+    updateJobTypes({commit}, payloads) {
+        axios({
+            method: 'PATCH',
+            url: `/api/admin/jobtype/${payloads.job_type_id}`,
+            data: payloads
+        }).then(function (response) {
+            console.log(response);
+        }).catch(error => {
+            if (error.response.status == 422) {
+                console.log(error.response.data.errors);
+                $.each(error.response.data.errors, function (key, value) {
+                    toastr.warning(value);
 
+                });
+                commit('stop_load');
+            }
+        });
     }
 };
 

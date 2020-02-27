@@ -3228,17 +3228,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // getEditJobTypes:'',
       search: '',
       editModal: false,
+      'status': [{
+        'id': 1,
+        'status': 'Active'
+      }, {
+        'id': 0,
+        'status': 'Inactive'
+      }],
       isLoading: false,
       headers: [{
         text: 'Job Level',
         align: 'left',
         sortable: false,
         value: 'job_type_name'
+      }, {
+        text: 'Status',
+        value: 'status'
       }, {
         text: 'Actions',
         value: 'actions'
@@ -3251,9 +3266,15 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     getTypes: function getTypes() {
       return this.$store.state.jobs.jobtypes.job_type;
+    },
+    getEditJobTypes: function getEditJobTypes() {
+      return this.$store.state.jobs.editjobtypes;
     }
   },
   methods: {
+    close: function close() {
+      this.editModal = false;
+    },
     deleteJobTypes: function deleteJobTypes(id) {
       this.$dialog.confirm('Are you Sure You want to Delete, Deleting Category will cause you to delete all the posts').then(function () {
         this.$store.dispatch('jobs/deleteJobTypes', id).then(function () {
@@ -3268,6 +3289,9 @@ __webpack_require__.r(__webpack_exports__);
     editJobTypes: function editJobTypes(id) {
       this.editModal = true;
       this.$store.dispatch('jobs/editJobTypes', id);
+    },
+    updateJobType: function updateJobType() {
+      this.$store.dispatch('jobs/updateJobTypes', this.getEditJobTypes);
     }
   }
 });
@@ -45110,6 +45134,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
+                  return _vm.updateJobType($event)
                 }
               }
             },
@@ -45126,10 +45151,35 @@ var render = function() {
                         "v-container",
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Job Type", required: "" }
+                            attrs: { label: "Job Type", required: "" },
+                            model: {
+                              value: _vm.getEditJobTypes.job_type_name,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.getEditJobTypes,
+                                  "job_type_name",
+                                  $$v
+                                )
+                              },
+                              expression: "getEditJobTypes.job_type_name"
+                            }
                           }),
                           _vm._v(" "),
-                          _c("v-select", { attrs: { label: "Status" } })
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.status,
+                              "item-text": "status",
+                              "item-value": "id",
+                              label: "Status"
+                            },
+                            model: {
+                              value: _vm.getEditJobTypes.status,
+                              callback: function($$v) {
+                                _vm.$set(_vm.getEditJobTypes, "status", $$v)
+                              },
+                              expression: "getEditJobTypes.status"
+                            }
+                          })
                         ],
                         1
                       )
@@ -45144,7 +45194,10 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-btn",
-                        { attrs: { text: "", color: "blue darken-1" } },
+                        {
+                          attrs: { text: "", color: "blue darken-1" },
+                          on: { click: _vm.close }
+                        },
                         [_vm._v("Cancel")]
                       ),
                       _vm._v(" "),
@@ -45215,6 +45268,19 @@ var render = function() {
                       },
                       [_vm._v("fa fa-trash")]
                     )
+                  ]
+                }
+              },
+              {
+                key: "item.status",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    item.status == 1
+                      ? _c("v-icon", { attrs: { dark: "", small: "" } }, [
+                          _vm._v("fa fa-check")
+                        ])
+                      : _c("v-icon", [_vm._v("fa fa-times")])
                   ]
                 }
               }
@@ -83370,12 +83436,7 @@ var __assign = undefined && undefined.__assign || function () {
 
   return __assign.apply(this, arguments);
 }; // Styles
-<<<<<<< HEAD
-=======
 
->>>>>>> bibek
-
- // Components
 
  // Components
 
@@ -104300,7 +104361,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var state = {
   dialog: false,
-  jobtypes: ''
+  jobtypes: '',
+  editjobtypes: ''
 };
 var getters = {};
 var mutations = {
@@ -104317,6 +104379,9 @@ var mutations = {
   get_job_types: function get_job_types(state, payloads) {
     state.jobtypes = payloads.data;
     state.dialog = false;
+  },
+  edit_job_types: function edit_job_types(state, payloads) {
+    state.editjobtypes = payloads.data.job_type;
   }
 };
 var actions = {
@@ -104373,6 +104438,30 @@ var actions = {
   },
   editJobTypes: function editJobTypes(_ref4, payloads) {
     var commit = _ref4.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: "/api/admin/jobtype/".concat(payloads)
+    }).then(function (response) {
+      commit('edit_job_types', response);
+    });
+  },
+  updateJobTypes: function updateJobTypes(_ref5, payloads) {
+    var commit = _ref5.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'PATCH',
+      url: "/api/admin/jobtype/".concat(payloads.job_type_id),
+      data: payloads
+    }).then(function (response) {
+      console.log(response);
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        console.log(error.response.data.errors);
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+      }
+    });
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
