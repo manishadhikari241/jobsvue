@@ -2886,22 +2886,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _JobLevelDatatableComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue");
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _JobLevelDatatableComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue");
 //
 //
 //
@@ -2975,34 +2969,50 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      dialog: false,
+      jobLevelRules: [function (v) {
+        return !!v || 'Job Level Name Required';
+      }],
+      jobLevelStatusRules: [function (v) {
+        return !!v || 'Please choose Status';
+      }],
+      dialog: this.$store.state.jobs.dialog,
       'status': [{
         'id': 1,
         'status': 'Active'
       }, {
         'id': 0,
         'status': 'Inactive'
-      }]
+      }],
+      jobLevelData: {
+        jobLevelName: '',
+        status: ''
+      }
     };
   },
   methods: {
+    getJobLevel: function getJobLevel() {},
     addJobLevel: function addJobLevel() {
       var _this = this;
 
-      this.$store.dispatch('jobs/addJobLevel').then(function () {
+      this.$store.dispatch('jobs/addJobLevel', this.jobLevelData).then(function () {
         _this.dialog = _this.$store.state.jobs.dialog;
+      })["finally"](function () {
+        setTimeout(function () {
+          _this.dialog = _this.$store.state.jobs.dialog;
+
+          _this.$store.dispatch('jobs/getJobLevel');
+        }, 600);
       });
     }
-  },
-  name: "LocationsComponent"
+  }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3022,24 +3032,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editModal: this.$store.state.jobs.editJobLevelModal,
       search: '',
       headers: [{
         text: 'Job Level',
         align: 'left',
         sortable: false,
-        value: 'location'
+        value: 'job_level_name'
+      }, {
+        text: 'Status',
+        align: 'left',
+        sortable: false,
+        value: 'status'
       }, {
         text: 'Actions',
         value: 'actions'
       }],
-      desserts: [{
-        value: false,
-        location: 'Frozen Yogurt'
+      items: [{
+        id: 1,
+        job_level_name: 'a'
       }]
     };
+  },
+  mounted: function mounted() {
+    this.$store.dispatch('jobs/getJobLevel');
+  },
+  computed: {
+    getJobLevel: function getJobLevel() {
+      // console.log(this.$store.state.jobs.jobLevel);
+      return this.$store.state.jobs.jobLevel.job_level;
+    }
+  },
+  methods: {
+    close: function close() {
+      this.editModal = false;
+    },
+    deleteJobLevel: function deleteJobLevel(id) {
+      this.$dialog.confirm('Are you Sure You want to Delete?').then(function () {
+        this.$store.dispatch('jobs/deleteJobLevel', id).then(function () {
+          var _this = this;
+
+          setTimeout(function () {
+            _this.$store.dispatch('jobs/getJobLevel');
+          }, 600);
+        }.bind(this));
+      }.bind(this));
+    },
+    editJobLevel: function editJobLevel(id) {
+      this.$store.dispatch('jobs/editJobLevel', id);
+    }
   }
 });
 
@@ -3232,6 +3315,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3245,6 +3340,7 @@ __webpack_require__.r(__webpack_exports__);
         'id': 0,
         'status': 'Inactive'
       }],
+      dialog: this.$store.state.jobs.dialog,
       isLoading: false,
       headers: [{
         text: 'Job Level',
@@ -3291,7 +3387,20 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch('jobs/editJobTypes', id);
     },
     updateJobType: function updateJobType() {
-      this.$store.dispatch('jobs/updateJobTypes', this.getEditJobTypes);
+      var _this2 = this;
+
+      this.$store.dispatch('jobs/updateJobTypes', this.getEditJobTypes).then(function () {
+        this.dialog = this.$store.state.jobs.dialog;
+        this.editModal = this.$store.state.jobs.editJobTypeModal;
+      }.bind(this))["finally"](function () {
+        setTimeout(function () {
+          _this2.dialog = _this2.$store.state.jobs.dialog;
+
+          _this2.$store.dispatch('jobs/getJobTypes');
+
+          _this2.editModal = _this2.$store.state.jobs.editJobTypeModal;
+        }, 600);
+      });
     }
   }
 });
@@ -44690,10 +44799,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44750,8 +44859,22 @@ var render = function() {
                                     [
                                       _c("v-text-field", {
                                         attrs: {
+                                          counter: 20,
+                                          rules: _vm.jobLevelRules,
                                           label: "Job Level",
                                           required: ""
+                                        },
+                                        model: {
+                                          value: _vm.jobLevelData.jobLevelName,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.jobLevelData,
+                                              "jobLevelName",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "jobLevelData.jobLevelName"
                                         }
                                       })
                                     ],
@@ -44764,11 +44887,23 @@ var render = function() {
                                     [
                                       _c("v-select", {
                                         attrs: {
+                                          rules: _vm.jobLevelStatusRules,
                                           items: _vm.status,
                                           name: "status",
                                           "item-text": "status",
                                           "item-value": "id",
                                           label: "Status"
+                                        },
+                                        model: {
+                                          value: _vm.jobLevelData.status,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.jobLevelData,
+                                              "status",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "jobLevelData.status"
                                         }
                                       })
                                     ],
@@ -44806,13 +44941,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-row",
-        [
-          _c("v-col", { attrs: { col: "12" } }, [_c("jobs-level-datatable")], 1)
-        ],
-        1
-      ),
+      _c("jobs-level-datatable"),
       _vm._v(" "),
       _c("v-row"),
       _vm._v(" "),
@@ -44861,10 +44990,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true&":
-/*!**************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44876,37 +45005,143 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-data-table", {
-    staticClass: "elevation-1",
-    attrs: { headers: _vm.headers, items: _vm.desserts, search: _vm.search },
-    scopedSlots: _vm._u([
-      {
-        key: "item.actions",
-        fn: function(ref) {
-          var item = ref.item
-          return [
-            _c(
-              "v-icon",
+  return _c(
+    "v-row",
+    [
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.editModal,
+            callback: function($$v) {
+              _vm.editModal = $$v
+            },
+            expression: "editModal"
+          }
+        },
+        [
+          _c(
+            "v-form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                }
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [_c("span", { staticClass: "headline" })]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { text: "", color: "blue darken-1" },
+                          on: { click: _vm.close }
+                        },
+                        [_vm._v("Cancel")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            color: "blue darken-1",
+                            type: "submit",
+                            text: ""
+                          }
+                        },
+                        [_vm._v("Update")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-col",
+        { attrs: { col: "12" } },
+        [
+          _c("v-data-table", {
+            staticClass: "elevation-1",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.getJobLevel,
+              search: _vm.search
+            },
+            scopedSlots: _vm._u([
               {
-                attrs: { dark: "", small: "" },
-                on: { click: function($event) {} }
+                key: "item.actions",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.editJobLevel(item.job_level_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteJobLevel(item.job_level_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-trash")]
+                    )
+                  ]
+                }
               },
-              [_vm._v("fa fa-edit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "v-icon",
               {
-                attrs: { dark: "", small: "" },
-                on: { click: function($event) {} }
-              },
-              [_vm._v("fa fa-trash")]
-            )
-          ]
-        }
-      }
-    ])
-  })
+                key: "item.status",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    item.status == 1
+                      ? _c("v-icon", { attrs: { dark: "", small: "" } }, [
+                          _vm._v("fa fa-check")
+                        ])
+                      : _c("v-icon", { attrs: { dark: "", small: "" } }, [
+                          _vm._v("fa fa-times")
+                        ])
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -45115,6 +45350,43 @@ var render = function() {
   return _c(
     "v-row",
     [
+      _c(
+        "v-dialog",
+        {
+          attrs: { "hide-overlay": "", persistent: "", width: "300" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            { attrs: { color: "primary", dark: "" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _vm._v(
+                    "\n                Updating Your Data, Please Stand By\n                "
+                  ),
+                  _c("v-progress-linear", {
+                    staticClass: "mb-0",
+                    attrs: { indeterminate: "", color: "white" }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "v-dialog",
         {
@@ -45773,8 +46045,8 @@ var render = function() {
                             [
                               _c(
                                 "router-link",
-                                { attrs: { to: "/admins/locations" } },
-                                [_vm._v("Add Locations")]
+                                { attrs: { to: "/admins/jobLevel" } },
+                                [_vm._v("Job Level")]
                               )
                             ],
                             1
@@ -103553,7 +103825,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('dashboard-component', __we
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('category-component', __webpack_require__(/*! ./components/Category/CategoryComponent.vue */ "./resources/js/components/Category/CategoryComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('setting-component', __webpack_require__(/*! ./components/Settings/SettingComponent */ "./resources/js/components/Settings/SettingComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('login', __webpack_require__(/*! ./components/Login/LoginComponent */ "./resources/js/components/Login/LoginComponent.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('jobs-level-datatable', __webpack_require__(/*! ./components/PostJobs/JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('jobs-level-datatable', __webpack_require__(/*! ./components/PostJobs/JobLevel/JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('job-type-datatable', __webpack_require__(/*! ./components/PostJobs/JobTypes/JobTypesDatatableComponent */ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue")["default"]);
 new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   router: router,
@@ -103819,18 +104091,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/JobLevelComponent.vue":
-/*!****************************************************************!*\
-  !*** ./resources/js/components/PostJobs/JobLevelComponent.vue ***!
-  \****************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue ***!
+  \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _JobLevelComponent_vue_vue_type_template_id_76a17b70_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true& */ "./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true&");
-/* harmony import */ var _JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLevelComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& */ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&");
+/* harmony import */ var _JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLevelComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -103840,66 +104112,66 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _JobLevelComponent_vue_vue_type_template_id_76a17b70_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _JobLevelComponent_vue_vue_type_template_id_76a17b70_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "76a17b70",
+  "8642e4a8",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/PostJobs/JobLevelComponent.vue"
+component.options.__file = "resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true&":
-/*!***********************************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true& ***!
-  \***********************************************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& ***!
+  \********************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_76a17b70_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelComponent.vue?vue&type=template&id=76a17b70&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_76a17b70_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_76a17b70_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue":
-/*!*************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/JobLevelDatatableComponent.vue ***!
-  \*************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue ***!
+  \**********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _JobLevelDatatableComponent_vue_vue_type_template_id_867cb584_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true& */ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true&");
-/* harmony import */ var _JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLevelDatatableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&");
+/* harmony import */ var _JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLevelDatatableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -103909,49 +104181,49 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _JobLevelDatatableComponent_vue_vue_type_template_id_867cb584_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _JobLevelDatatableComponent_vue_vue_type_template_id_867cb584_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "867cb584",
+  "7a46ea5a",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/PostJobs/JobLevelDatatableComponent.vue"
+component.options.__file = "resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelDatatableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelDatatableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true&":
-/*!********************************************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true& ***!
-  \********************************************************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&":
+/*!*****************************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& ***!
+  \*****************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_867cb584_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevelDatatableComponent.vue?vue&type=template&id=867cb584&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_867cb584_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_867cb584_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -104327,9 +104599,9 @@ var routes = [{
     name: 'settings',
     component: __webpack_require__(/*! ../components/Settings/SettingComponent */ "./resources/js/components/Settings/SettingComponent.vue")["default"]
   }, {
-    path: 'locations',
-    name: 'locations',
-    component: __webpack_require__(/*! ../components/PostJobs/JobLevelComponent */ "./resources/js/components/PostJobs/JobLevelComponent.vue")["default"]
+    path: 'jobLevel',
+    name: 'jobLevel',
+    component: __webpack_require__(/*! ../components/PostJobs/JobLevel/JobLevelComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue")["default"]
   }, {
     path: 'jobTypes',
     name: 'jobTypes',
@@ -104362,10 +104634,18 @@ __webpack_require__.r(__webpack_exports__);
 var state = {
   dialog: false,
   jobtypes: '',
-  editjobtypes: ''
+  editjobtypes: '',
+  editJobTypeModal: true,
+  editJobLevelModal: false,
+  jobLevel: ''
 };
 var getters = {};
 var mutations = {
+  /**
+   * @param state
+   * @param payload
+   * Job types
+   */
   initial_load: function initial_load(state, payload) {
     state.dialog = true;
   },
@@ -104382,20 +104662,68 @@ var mutations = {
   },
   edit_job_types: function edit_job_types(state, payloads) {
     state.editjobtypes = payloads.data.job_type;
+  },
+
+  /**
+   *Job Level
+   */
+  job_level_added: function job_level_added(state, payloads) {
+    state.dialog = false;
+  },
+  get_job_level: function get_job_level(state, payloads) {
+    state.jobLevel = payloads.data;
   }
 };
 var actions = {
-  addJobLevel: function addJobLevel() {
+  addJobLevel: function addJobLevel(_ref, payloads) {
+    var commit = _ref.commit;
+    commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
-      method: 'POST'
-    }).then(function () {
-      state.dialog = true;
-      console.log(state.dialog);
+      method: 'POST',
+      data: {
+        job_level: payloads.jobLevelName,
+        status: payloads.status
+      },
+      url: '/api/admin/joblevel'
+    }).then(function (response) {
+      console.log(response);
+
+      if (response.data.status == 'success') {
+        toastr.success(response.data.message);
+        commit('job_level_added');
+      }
     })["catch"](function (error) {});
   },
-  addJobTypes: function addJobTypes(_ref, payloads) {
-    var commit = _ref.commit,
-        state = _ref.state;
+  getJobLevel: function getJobLevel(_ref2, state) {
+    var commit = _ref2.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: '/api/admin/joblevel'
+    }).then(function (response) {
+      commit('get_job_level', response);
+    });
+  },
+  deleteJobLevel: function deleteJobLevel(_ref3, payloads) {
+    var commit = _ref3.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'DELETE',
+      url: "/api/admin/joblevel/".concat(payloads)
+    }).then(function (response) {
+      toastr.success(response.data.message);
+    });
+  },
+  editJobLevel: function editJobLevel(_ref4, payloads) {
+    var commit = _ref4.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: "/api/admin/joblevel/".concat(payloads)
+    }).then(function (response) {
+      console.log(response);
+    });
+  },
+  addJobTypes: function addJobTypes(_ref5, payloads) {
+    var commit = _ref5.commit,
+        state = _ref5.state;
     commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'POST',
@@ -104416,8 +104744,8 @@ var actions = {
       }
     });
   },
-  getJobTypes: function getJobTypes(_ref2, state) {
-    var commit = _ref2.commit;
+  getJobTypes: function getJobTypes(_ref6, state) {
+    var commit = _ref6.commit;
     commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'GET',
@@ -104427,8 +104755,8 @@ var actions = {
       commit('get_job_types', response);
     }.bind(this))["catch"](function (error) {});
   },
-  deleteJobTypes: function deleteJobTypes(_ref3, payloads) {
-    var commit = _ref3.commit;
+  deleteJobTypes: function deleteJobTypes(_ref7, payloads) {
+    var commit = _ref7.commit;
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       url: "/api/admin/jobtype/".concat(payloads),
       method: 'Delete'
@@ -104436,8 +104764,8 @@ var actions = {
       toastr.success(response.data.message); // console.log(response.data.message);
     });
   },
-  editJobTypes: function editJobTypes(_ref4, payloads) {
-    var commit = _ref4.commit;
+  editJobTypes: function editJobTypes(_ref8, payloads) {
+    var commit = _ref8.commit;
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'GET',
       url: "/api/admin/jobtype/".concat(payloads)
@@ -104445,14 +104773,17 @@ var actions = {
       commit('edit_job_types', response);
     });
   },
-  updateJobTypes: function updateJobTypes(_ref5, payloads) {
-    var commit = _ref5.commit;
+  updateJobTypes: function updateJobTypes(_ref9, payloads) {
+    var commit = _ref9.commit,
+        state = _ref9.state;
+    commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'PATCH',
       url: "/api/admin/jobtype/".concat(payloads.job_type_id),
       data: payloads
     }).then(function (response) {
-      console.log(response);
+      commit('stop_load');
+      state.editJobTypeModal = false;
     })["catch"](function (error) {
       if (error.response.status == 422) {
         console.log(error.response.data.errors);
@@ -104460,6 +104791,7 @@ var actions = {
           toastr.warning(value);
         });
         commit('stop_load');
+        state.editJobTypeModal = true;
       }
     });
   }

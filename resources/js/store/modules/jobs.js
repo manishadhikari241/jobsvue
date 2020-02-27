@@ -3,16 +3,25 @@ import axios from "axios";
 const state = {
     dialog: false,
     jobtypes: '',
-    editjobtypes: ''
+    editjobtypes: '',
+    editJobTypeModal: true,
+    editJobLevelModal: false,
+    jobLevel: ''
 
 };
 const getters = {};
 
 const mutations = {
+
+    /**
+     * @param state
+     * @param payload
+     * Job types
+     */
     initial_load(state, payload) {
         state.dialog = true
-    }
-    , stop_load(state, payload) {
+    },
+    stop_load(state, payload) {
         state.dialog = false;
 
     },
@@ -27,21 +36,69 @@ const mutations = {
     },
     edit_job_types(state, payloads) {
         state.editjobtypes = payloads.data.job_type
-    }
+    },
+
+    /**
+     *Job Level
+     */
+    job_level_added(state, payloads) {
+        state.dialog = false;
+    },
+    get_job_level(state, payloads) {
+        state.jobLevel = payloads.data;
+    },
+
 
 };
 
 const actions = {
-    addJobLevel() {
+    addJobLevel({commit}, payloads) {
+        commit('initial_load');
         axios({
             method: 'POST',
-        }).then(() => {
-            state.dialog = true;
-            console.log(state.dialog);
+            data: {
+                job_level: payloads.jobLevelName,
+                status: payloads.status
+            },
+            url: '/api/admin/joblevel'
+
+        }).then(function (response) {
+            console.log(response);
+            if (response.data.status == 'success') {
+                toastr.success(response.data.message);
+
+                commit('job_level_added');
+            }
         }).catch(error => {
 
         });
     },
+    getJobLevel({commit}, state) {
+        axios({
+            method: 'GET',
+            url: '/api/admin/joblevel'
+        }).then(function (response) {
+            commit('get_job_level', response);
+        })
+    },
+    deleteJobLevel({commit}, payloads) {
+        axios({
+            method: 'DELETE',
+            url: `/api/admin/joblevel/${payloads}`
+        }).then(function (response) {
+            toastr.success(response.data.message);
+        })
+    },
+    editJobLevel({commit}, payloads) {
+        axios({
+            method: 'GET',
+            url: `/api/admin/joblevel/${payloads}`
+        }).then(function (response) {
+            console.log(response);
+        })
+    },
+
+
     addJobTypes({commit, state}, payloads) {
         commit('initial_load');
         axios({
@@ -94,13 +151,17 @@ const actions = {
             commit('edit_job_types', response);
         });
     },
-    updateJobTypes({commit}, payloads) {
+    updateJobTypes({commit, state}, payloads,) {
+        commit('initial_load');
         axios({
             method: 'PATCH',
             url: `/api/admin/jobtype/${payloads.job_type_id}`,
             data: payloads
         }).then(function (response) {
-            console.log(response);
+            commit('stop_load');
+            state.editJobTypeModal = false
+
+
         }).catch(error => {
             if (error.response.status == 422) {
                 console.log(error.response.data.errors);
@@ -109,6 +170,8 @@ const actions = {
 
                 });
                 commit('stop_load');
+                state.editJobTypeModal = true
+
             }
         });
     }

@@ -40,7 +40,7 @@
 
                         <v-list-item-content>
                             <v-list-item-title>
-                                <router-link to="/admins/locations">Add Locations</router-link>
+                                <router-link to="/admins/jobLevel">Job Level</router-link>
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>

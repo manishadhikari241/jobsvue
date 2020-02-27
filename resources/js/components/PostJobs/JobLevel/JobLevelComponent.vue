@@ -14,17 +14,15 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12" md="6">
-                                        <v-text-field
-                                                label="Job Level"
-                                                required
-                                        ></v-text-field>
+                                        <v-text-field v-model="jobLevelData.jobLevelName" :counter="20"
+                                                      :rules="jobLevelRules" label="Job Level"
+                                                      required></v-text-field>
                                     </v-col>
 
-                                    <v-col
-                                            cols="12"
-                                            md="6"
-                                    >
-                                        <v-select :items="status" name="status" item-text="status" item-value="id"
+                                    <v-col cols="12" md="6">
+                                        <v-select v-model="jobLevelData.status" :rules="jobLevelStatusRules"
+                                                  :items="status" name="status"
+                                                  item-text="status" item-value="id"
                                                   label="Status"></v-select>
                                     </v-col>
 
@@ -43,12 +41,8 @@
             </v-col>
 
         </v-row>
-        <v-row>
-            <v-col col="12">
-                <jobs-level-datatable></jobs-level-datatable>
-            </v-col>
+        <jobs-level-datatable></jobs-level-datatable>
 
-        </v-row>
         <v-row>
 
         </v-row>
@@ -77,19 +71,38 @@
         components: {JobLevelDatatableComponent},
         data() {
             return {
-                dialog: false,
+                jobLevelRules: [
+                    v => !!v || 'Job Level Name Required'
+                ],
+                jobLevelStatusRules: [
+                    v => !!v || 'Please choose Status'
+                ],
+                dialog: this.$store.state.jobs.dialog,
                 'status': [{'id': 1, 'status': 'Active'}, {'id': 0, 'status': 'Inactive'}],
+                jobLevelData: {
+                    jobLevelName: '',
+                    status: '',
+
+                }
 
             }
         },
         methods: {
+            getJobLevel() {
+
+            },
             addJobLevel() {
-                this.$store.dispatch('jobs/addJobLevel').then(() => {
+                this.$store.dispatch('jobs/addJobLevel', this.jobLevelData).then(() => {
                     this.dialog = this.$store.state.jobs.dialog;
+                }).finally(() => {
+                    setTimeout(() => {
+                        this.dialog = this.$store.state.jobs.dialog;
+                        this.$store.dispatch('jobs/getJobLevel');
+                    }, 600)
                 });
             }
         },
-        name: "LocationsComponent"
+
     }
 </script>
 

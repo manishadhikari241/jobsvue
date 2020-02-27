@@ -1,6 +1,18 @@
 <template>
 
     <v-row>
+        <v-dialog v-model="dialog" hide-overlay persistent width="300">
+            <v-card color="primary" dark>
+                <v-card-text>
+                    Updating Your Data, Please Stand By
+                    <v-progress-linear
+                            indeterminate
+                            color="white"
+                            class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
         <v-dialog v-model="editModal" max-width="500px">
             <v-form @submit.prevent="updateJobType">
 
@@ -61,6 +73,7 @@
                 search: '',
                 editModal: false,
                 'status': [{'id': 1, 'status': 'Active'}, {'id': 0, 'status': 'Inactive'}],
+                dialog: this.$store.state.jobs.dialog,
 
                 isLoading: false,
                 headers: [
@@ -112,7 +125,18 @@
                 this.$store.dispatch('jobs/editJobTypes', id);
             },
             updateJobType() {
-                this.$store.dispatch('jobs/updateJobTypes', this.getEditJobTypes);
+                this.$store.dispatch('jobs/updateJobTypes', this.getEditJobTypes).then(function () {
+                    this.dialog = this.$store.state.jobs.dialog;
+                    this.editModal = this.$store.state.jobs.editJobTypeModal;
+
+                }.bind(this)).finally(() => {
+                    setTimeout(() => {
+                        this.dialog = this.$store.state.jobs.dialog;
+                        this.$store.dispatch('jobs/getJobTypes');
+                        this.editModal = this.$store.state.jobs.editJobTypeModal;
+
+                    }, 600)
+                });
             }
         }
     }
