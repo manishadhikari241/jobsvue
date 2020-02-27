@@ -108,8 +108,7 @@ class JobtypeController extends DashboardController
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json([
-                "message" => "Validation Error",
-                "title" => $errors
+                "errors" => $errors
             ],422);
         }
         try {
