@@ -54,7 +54,6 @@ class JoblevelController extends DashboardController
      */
     public function store(JoblevelRequest $request)
     {
-
         try {
             $this->level->store($request);
         } catch (\Exception $exception) {
@@ -75,7 +74,12 @@ class JoblevelController extends DashboardController
      */
     public function show($id)
     {
-        //
+        $job_level=$this->level->getbyId($id);
+
+        return response()->json([
+            'status'=>'success',
+            'job_level'=>$job_level,
+        ],200);
     }
 
     /**
@@ -105,11 +109,9 @@ class JoblevelController extends DashboardController
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json([
-                "message" => "Validation Error",
-                "title" => $errors
+                "errors" => $errors
             ],422);
         }
-
             try {
                 $this->level->update_joblevel($request, $id);
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Blogs\BlogRequest;
 use App\Repositories\Eloquent\EloquentBlogRepository;
-use App\Repositories\Eloquent\EloquentBlogRepositoryRepository;
 use Illuminate\Http\Request;
 
 class BlogController extends DashboardController
@@ -20,12 +20,17 @@ class BlogController extends DashboardController
     public function __construct(EloquentBlogRepository $blog)
     {
         parent::__construct();
-        $this->$blog=$blog;
+        $this->blog=$blog;
     }
 
     public function index()
     {
-        //
+        $blogs=$this->blog->getAll();
+
+        return response()->json([
+           'status'=>'success',
+           'blogs'=>$blogs
+        ],200);
     }
 
     /**
@@ -44,9 +49,17 @@ class BlogController extends DashboardController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BlogRequest $request)
     {
-
+        try {
+            $this->blog->store($request);
+        } catch (\Exception $exception) {
+            throw new  \PDOException('Error in saving Blog' . $exception->getMessage());
+        }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Blog Successfully Added'
+            ], 200);
     }
 
     /**

@@ -21,6 +21,12 @@ class EloquentJoblevelRepository extends AbstractRepository implements JoblevelR
         return $job_level;
     }
 
+    public function getbyId($id)
+    {
+        $job_level=$this->entity()::find($id);
+        return $job_level;
+    }
+
 
     public function store($request)
     {

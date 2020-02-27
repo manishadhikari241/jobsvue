@@ -19,6 +19,12 @@ class EloquentBlogCategoryRepository extends AbstractRepository implements BlogC
         return $category;
     }
 
+    public function getbyId($id)
+    {
+        $category=$this->entity()::find($id);
+        return $category;
+    }
+
     public function store($request)
     {
         $data['blog_category_name']=$request->blog_category_name;
