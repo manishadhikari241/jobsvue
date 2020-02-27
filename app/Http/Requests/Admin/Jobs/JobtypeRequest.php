@@ -28,7 +28,7 @@ class JobtypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_type_name'=>'required|unique:jobtypes',
+            'job_type_name'=>'required|unique:jobtypes,job_type_name',
             'status'=>'required'
         ];
     }
