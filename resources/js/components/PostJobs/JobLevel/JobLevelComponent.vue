@@ -100,7 +100,8 @@
                         this.$store.dispatch('jobs/getJobLevel');
                     }, 600)
                 });
-            }
+            },
+
         },
 
     }

@@ -1,23 +1,22 @@
 <template>
     <v-row>
         <v-dialog v-model="editModal" max-width="500px">
-            <v-form @submit.prevent="">
+            <v-form @submit.prevent="updateJobLevel">
 
                 <v-card>
                     <v-card-title>
                         <span class="headline"></span>
                     </v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-text-field label="Job Type" v-model="getEditJobLevel.job_level_name"
+                                          required></v-text-field>
 
-                    <!--<v-card-text>-->
-                    <!--<v-container>-->
-                    <!--<v-text-field label="Job Type" v-model="getEditJobTypes.job_type_name"-->
-                    <!--required></v-text-field>-->
+                            <v-select v-model="getEditJobLevel.status" :items="status" item-text="status"
+                                      item-value="id" label="Status"></v-select>
 
-                    <!--<v-select v-model="getEditJobTypes.status" :items="status" item-text="status"-->
-                    <!--item-value="id" label="Status"></v-select>-->
-
-                    <!--</v-container>-->
-                    <!--</v-card-text>-->
+                        </v-container>
+                    </v-card-text>
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -31,6 +30,7 @@
 
 
         <v-col col="12">
+
             <v-data-table
                     :headers="headers"
                     :items="getJobLevel"
@@ -56,6 +56,8 @@
         data() {
             return {
                 editModal: this.$store.state.jobs.editJobLevelModal,
+                'status': [{'id': 1, 'status': 'Active'}, {'id': 0, 'status': 'Inactive'}],
+
                 search: '',
                 headers: [
 
@@ -76,12 +78,7 @@
                         value: 'actions'
                     }
                 ],
-                items: [
-                    {
-                        id: 1,
-                        job_level_name: 'a'
-                    }
-                ]
+
 
             }
         },
@@ -93,6 +90,9 @@
 
                 // console.log(this.$store.state.jobs.jobLevel);
                 return this.$store.state.jobs.jobLevel.job_level;
+            },
+            getEditJobLevel() {
+                return this.$store.state.jobs.editJobLevel
             }
         },
         methods: {
@@ -113,7 +113,27 @@
 
             },
             editJobLevel(id) {
-                this.$store.dispatch('jobs/editJobLevel', id);
+                this.editModal = true;
+                this.$store.dispatch('jobs/editJobLevel', id).then(function () {
+                    // setTimeout(() => {
+                    //     this.editModal= this.$store.state.jobs.editJobLevelModal;
+                    //     ccnsole.log(this.editModal);
+                    // },600)
+                }.bind(this));
+            },
+            updateJobLevel() {
+                this.$store.dispatch('jobs/updateJobLevel', this.getEditJobLevel).then(function () {
+                    this.dialog = this.$store.state.jobs.dialog;
+                    this.editModal = this.$store.state.jobs.editJobTypeModal;
+
+                }.bind(this)).finally(() => {
+                    setTimeout(() => {
+                        this.dialog = this.$store.state.jobs.dialog;
+                        this.$store.dispatch('jobs/getJobTypes');
+                        this.editModal = this.$store.state.jobs.editJobTypeModal;
+
+                    }, 600)
+                });
             }
         }
 

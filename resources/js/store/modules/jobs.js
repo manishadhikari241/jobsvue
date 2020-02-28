@@ -5,8 +5,10 @@ const state = {
     jobtypes: '',
     editjobtypes: '',
     editJobTypeModal: true,
+
     editJobLevelModal: false,
-    jobLevel: ''
+    jobLevel: '',
+    editJobLevel: ''
 
 };
 const getters = {};
@@ -25,6 +27,7 @@ const mutations = {
         state.dialog = false;
 
     },
+
     job_types_added(payloads) {
         state.dialog = false;
         toastr.success('Job Types Added');
@@ -47,6 +50,10 @@ const mutations = {
     get_job_level(state, payloads) {
         state.jobLevel = payloads.data;
     },
+    edit_job_level(state, payloads) {
+        state.editJobLevel = payloads.data.job_level;
+        state.editJobLevelModal = true
+    }
 
 
 };
@@ -70,7 +77,14 @@ const actions = {
                 commit('job_level_added');
             }
         }).catch(error => {
+            if (error.response.status == 422) {
+                console.log(error.response.data.errors);
+                $.each(error.response.data.errors, function (key, value) {
+                    toastr.warning(value);
 
+                });
+                commit('stop_load');
+            }
         });
     },
     getJobLevel({commit}, state) {
@@ -94,8 +108,34 @@ const actions = {
             method: 'GET',
             url: `/api/admin/joblevel/${payloads}`
         }).then(function (response) {
+            commit('edit_job_level', response);
             console.log(response);
         })
+    },
+    updateJobLevel({commit}, payloads) {
+        console.log(payloads);
+        commit('initial_load');
+        axios({
+            method: 'PATCH',
+            url: `/api/admin/joblevel/${payloads.job_level_id}`,
+            data: payloads
+        }).then(function (response) {
+            commit('stop_load');
+            state.editJobLevelModalModal = false
+
+
+        }).catch(error => {
+            if (error.response.status == 422) {
+                console.log(error.response.data.errors);
+                $.each(error.response.data.errors, function (key, value) {
+                    toastr.warning(value);
+
+                });
+                commit('stop_load');
+                state.editJobLevelModal = true
+
+            }
+        });
     },
 
 

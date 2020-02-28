@@ -3075,6 +3075,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       editModal: this.$store.state.jobs.editJobLevelModal,
+      'status': [{
+        'id': 1,
+        'status': 'Active'
+      }, {
+        'id': 0,
+        'status': 'Inactive'
+      }],
       search: '',
       headers: [{
         text: 'Job Level',
@@ -3089,10 +3096,6 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: 'Actions',
         value: 'actions'
-      }],
-      items: [{
-        id: 1,
-        job_level_name: 'a'
       }]
     };
   },
@@ -3103,6 +3106,9 @@ __webpack_require__.r(__webpack_exports__);
     getJobLevel: function getJobLevel() {
       // console.log(this.$store.state.jobs.jobLevel);
       return this.$store.state.jobs.jobLevel.job_level;
+    },
+    getEditJobLevel: function getEditJobLevel() {
+      return this.$store.state.jobs.editJobLevel;
     }
   },
   methods: {
@@ -3121,7 +3127,28 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     editJobLevel: function editJobLevel(id) {
-      this.$store.dispatch('jobs/editJobLevel', id);
+      this.editModal = true;
+      this.$store.dispatch('jobs/editJobLevel', id).then(function () {// setTimeout(() => {
+        //     this.editModal= this.$store.state.jobs.editJobLevelModal;
+        //     ccnsole.log(this.editModal);
+        // },600)
+      }.bind(this));
+    },
+    updateJobLevel: function updateJobLevel() {
+      var _this2 = this;
+
+      this.$store.dispatch('jobs/updateJobLevel', this.getEditJobLevel).then(function () {
+        this.dialog = this.$store.state.jobs.dialog;
+        this.editModal = this.$store.state.jobs.editJobTypeModal;
+      }.bind(this))["finally"](function () {
+        setTimeout(function () {
+          _this2.dialog = _this2.$store.state.jobs.dialog;
+
+          _this2.$store.dispatch('jobs/getJobTypes');
+
+          _this2.editModal = _this2.$store.state.jobs.editJobTypeModal;
+        }, 600);
+      });
     }
   }
 });
@@ -45027,6 +45054,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
+                  return _vm.updateJobLevel($event)
                 }
               }
             },
@@ -45035,6 +45063,49 @@ var render = function() {
                 "v-card",
                 [
                   _c("v-card-title", [_c("span", { staticClass: "headline" })]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-container",
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Job Type", required: "" },
+                            model: {
+                              value: _vm.getEditJobLevel.job_level_name,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.getEditJobLevel,
+                                  "job_level_name",
+                                  $$v
+                                )
+                              },
+                              expression: "getEditJobLevel.job_level_name"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.status,
+                              "item-text": "status",
+                              "item-value": "id",
+                              label: "Status"
+                            },
+                            model: {
+                              value: _vm.getEditJobLevel.status,
+                              callback: function($$v) {
+                                _vm.$set(_vm.getEditJobLevel, "status", $$v)
+                              },
+                              expression: "getEditJobLevel.status"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "v-card-actions",
@@ -104637,7 +104708,8 @@ var state = {
   editjobtypes: '',
   editJobTypeModal: true,
   editJobLevelModal: false,
-  jobLevel: ''
+  jobLevel: '',
+  editJobLevel: ''
 };
 var getters = {};
 var mutations = {
@@ -104672,6 +104744,10 @@ var mutations = {
   },
   get_job_level: function get_job_level(state, payloads) {
     state.jobLevel = payloads.data;
+  },
+  edit_job_level: function edit_job_level(state, payloads) {
+    state.editJobLevel = payloads.data.job_level;
+    state.editJobLevelModal = true;
   }
 };
 var actions = {
@@ -104692,7 +104768,15 @@ var actions = {
         toastr.success(response.data.message);
         commit('job_level_added');
       }
-    })["catch"](function (error) {});
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        console.log(error.response.data.errors);
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+      }
+    });
   },
   getJobLevel: function getJobLevel(_ref2, state) {
     var commit = _ref2.commit;
@@ -104718,12 +104802,35 @@ var actions = {
       method: 'GET',
       url: "/api/admin/joblevel/".concat(payloads)
     }).then(function (response) {
+      commit('edit_job_level', response);
       console.log(response);
     });
   },
-  addJobTypes: function addJobTypes(_ref5, payloads) {
-    var commit = _ref5.commit,
-        state = _ref5.state;
+  updateJobLevel: function updateJobLevel(_ref5, payloads) {
+    var commit = _ref5.commit;
+    console.log(payloads);
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'PATCH',
+      url: "/api/admin/joblevel/".concat(payloads.job_level_id),
+      data: payloads
+    }).then(function (response) {
+      commit('stop_load');
+      state.editJobLevelModalModal = false;
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        console.log(error.response.data.errors);
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+        state.editJobLevelModal = true;
+      }
+    });
+  },
+  addJobTypes: function addJobTypes(_ref6, payloads) {
+    var commit = _ref6.commit,
+        state = _ref6.state;
     commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'POST',
@@ -104744,8 +104851,8 @@ var actions = {
       }
     });
   },
-  getJobTypes: function getJobTypes(_ref6, state) {
-    var commit = _ref6.commit;
+  getJobTypes: function getJobTypes(_ref7, state) {
+    var commit = _ref7.commit;
     commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'GET',
@@ -104755,8 +104862,8 @@ var actions = {
       commit('get_job_types', response);
     }.bind(this))["catch"](function (error) {});
   },
-  deleteJobTypes: function deleteJobTypes(_ref7, payloads) {
-    var commit = _ref7.commit;
+  deleteJobTypes: function deleteJobTypes(_ref8, payloads) {
+    var commit = _ref8.commit;
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       url: "/api/admin/jobtype/".concat(payloads),
       method: 'Delete'
@@ -104764,8 +104871,8 @@ var actions = {
       toastr.success(response.data.message); // console.log(response.data.message);
     });
   },
-  editJobTypes: function editJobTypes(_ref8, payloads) {
-    var commit = _ref8.commit;
+  editJobTypes: function editJobTypes(_ref9, payloads) {
+    var commit = _ref9.commit;
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'GET',
       url: "/api/admin/jobtype/".concat(payloads)
@@ -104773,9 +104880,9 @@ var actions = {
       commit('edit_job_types', response);
     });
   },
-  updateJobTypes: function updateJobTypes(_ref9, payloads) {
-    var commit = _ref9.commit,
-        state = _ref9.state;
+  updateJobTypes: function updateJobTypes(_ref10, payloads) {
+    var commit = _ref10.commit,
+        state = _ref10.state;
     commit('initial_load');
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'PATCH',
