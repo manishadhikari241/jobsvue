@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Blogs\BlogRequest;
+use App\Model\Blog;
 use App\Repositories\Eloquent\EloquentBlogRepository;
 use Illuminate\Http\Request;
 
@@ -25,12 +26,12 @@ class BlogController extends DashboardController
 
     public function index()
     {
-        $blogs=$this->blog->getAll();
-
-        return response()->json([
-           'status'=>'success',
-           'blogs'=>$blogs
-        ],200);
+      $blogs=Blog::all();
+       return new \App\Http\Resources\Blog($blogs);
+//        return response()->json([
+//           'status'=>'success',
+//           'blogs'=>$blogs
+//        ],200);
     }
 
     /**

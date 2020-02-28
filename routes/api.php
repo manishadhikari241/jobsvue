@@ -30,6 +30,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::apiResource('jobtype','JobtypeController');
     Route::apiResource('blogcategory','BlogCategoryController');
     Route::apiResource('blogs','BlogController');
+    Route::get('/blogs', function () {
+        return \App\Http\Resources\Blog::collection(\App\Model\Blog::all());
+    });
 });
 
 Route::apiResource('about', 'AboutController');
