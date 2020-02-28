@@ -28,7 +28,7 @@ class JoblevelRequest extends FormRequest
     public function rules()
     {
         return [
-            'job_level'=>'required|unique:joblevels,job_level_name',
+            'job_level_name'=>'required|unique:joblevels,job_level_name',
             'status'=>'required'
         ];
     }

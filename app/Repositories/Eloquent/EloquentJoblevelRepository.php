@@ -30,7 +30,7 @@ class EloquentJoblevelRepository extends AbstractRepository implements JoblevelR
 
     public function store($request)
     {
-       $data['job_level_name']=$request->job_level;
+       $data['job_level_name']=$request->job_level_name;
        $data['status']=$request->status;
        $create=$this->entity()::create($data);
        return $create;
@@ -39,7 +39,7 @@ class EloquentJoblevelRepository extends AbstractRepository implements JoblevelR
     public function update_joblevel($request, $id)
     {
         $find = $this->entity()::find($id);
-        $data['job_level_name']=$request->job_level;
+        $data['job_level_name']=$request->job_level_name;
         $data['status']=$request->status;
         $update = $find->update($data);
         return $update;
