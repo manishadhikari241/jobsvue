@@ -103,7 +103,7 @@ class JoblevelController extends DashboardController
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'job_level'=>'required|unique:joblevels,job_level_name,'.$id.',job_level_id',
+            'job_level_name'=>'required|unique:joblevels,job_level_name,'.$id.',job_level_id',
             'status'=>'required'
         ]);
         if ($validator->fails()) {

@@ -14,7 +14,7 @@ class CreateJobtypesTable extends Migration
     public function up()
     {
         Schema::create('jobtypes', function (Blueprint $table) {
-            $table->bigIncrements('job_type_id');
+            $table->increments('job_type_id');
             $table->string('job_type_name');
             $table->boolean('status');
             $table->timestamps();

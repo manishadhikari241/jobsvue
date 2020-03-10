@@ -26,13 +26,17 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::resource('category', 'CategoryController');
     Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
 
-    Route::apiResource('joblevel','JoblevelController');
-    Route::apiResource('jobtype','JobtypeController');
-    Route::apiResource('blogcategory','BlogCategoryController');
+    Route::apiResource('job-level','JoblevelController');
+    Route::apiResource('job-type','JobtypeController');
+    Route::apiResource('blog-category','BlogCategoryController');
     Route::apiResource('blogs','BlogController');
     Route::get('/blogs', function () {
         return \App\Http\Resources\Blog::collection(\App\Model\Blog::all());
     });
+    Route::apiResource('company-packages','CompanyPackageController');
+    Route::apiResource('city','CityController');
+    Route::apiResource('employer-industry','EmployerIndustryController');
+    Route::apiResource('employer','EmployerController');
 });
 
 Route::apiResource('about', 'AboutController');

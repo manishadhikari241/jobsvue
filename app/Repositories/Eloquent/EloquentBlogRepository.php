@@ -18,7 +18,6 @@ class EloquentBlogRepository extends AbstractRepository implements BlogRepositor
     {
 
         $blog=$this->entity()::all()->first()->categories;
-        dd($blog);
         return $blog;
     }
 
@@ -37,6 +36,23 @@ class EloquentBlogRepository extends AbstractRepository implements BlogRepositor
         $data['status']=$request->status;
         $create=$this->entity()::create($data);
         return $create;
+    }
 
+    public function update($request,$id)
+    {
+        $find=$this->entity()::find($id);
+        $data['blog_title']=$request->blog_title;
+        $data['blog_category_id']=$request->blog_category_id;
+        $data['blog_description']=$request->blog_description;
+        $data['status']=$request->status;
+        $update=$find->update($data);
+        return $update;
+    }
+
+    public function delete($id)
+    {
+        $find=$this->entity()::find($id);
+        $del=$find->delete();
+        return $del;
     }
 }
