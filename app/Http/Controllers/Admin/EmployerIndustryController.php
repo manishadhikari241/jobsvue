@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Blogs\BlogRequest;
-use App\Model\Blog;
-use App\Repositories\Eloquent\EloquentBlogRepository;
+use App\Http\Requests\Admin\Employer\EmployerIndustryRequest;
+use App\Model\EmployerIndustry;
+use App\Repositories\Eloquent\EloquentEmployerIndustryRepository;
 use Illuminate\Http\Request;
 
-class BlogController extends DashboardController
+class EmployerIndustryController extends DashboardController
 {
     /**
      * Display a listing of the resource.
@@ -16,22 +16,22 @@ class BlogController extends DashboardController
      * @return \Illuminate\Http\Response
      */
 
-    protected $blog;
+    protected $industry;
 
-    public function __construct(EloquentBlogRepository $blog)
+    public function __construct(EloquentEmployerIndustryRepository $industry)
     {
         parent::__construct();
-        $this->blog=$blog;
+        $this->industry=$industry;
     }
 
     public function index()
     {
-//      $blogs=$this->blog->all();
-//       return new \App\Http\Resources\Blog($blogs);
-//        return response()->json([
-//           'status'=>'success',
-//           'blogs'=>$blogs
-//        ],200);
+        $pack=$this->industry->getAll();
+
+        return response()->json([
+            'status' =>'success',
+            'industry'=>$pack
+        ],200);
     }
 
     /**
@@ -50,17 +50,17 @@ class BlogController extends DashboardController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BlogRequest $request)
+    public function store(EmployerIndustryRequest $request)
     {
         try {
-            $this->blog->store($request);
+            $this->industry->store($request);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in saving Blog' . $exception->getMessage());
+            throw new  \PDOException('Error in saving Industry' . $exception->getMessage());
         }
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Blog Successfully Added'
-            ], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Industry Successfully Added'
+        ], 200);
     }
 
     /**
@@ -69,17 +69,14 @@ class BlogController extends DashboardController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-
-        $blog=$this->blog->getbyId($id);
+        $pack=$this->industry->getbyId($id);
 
         return response()->json([
-            'status'=>'success',
-            'blog'=>$blog,
+            'status' =>'success',
+            'industry'=>$pack
         ],200);
-
-
     }
 
     /**
@@ -103,11 +100,10 @@ class BlogController extends DashboardController
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'blog_title'=>'required|unique:blogs,blog_title','.$id.','blog_id',
-            'blog_category_id'=>'required|exists:blog_categories,blog_category_id',
-            'blog_description'=>'required',
-            'status'=>'required'
+            'industry_name'=>'required|unique:employer_industries,industry_name,'.$id.',industry_id',
+            'status'=>'required|in:pending,publish'
         ]);
+
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json([
@@ -115,10 +111,9 @@ class BlogController extends DashboardController
             ],422);
         }
         try {
-            $this->blog->update($request, $id);
-
+            $this->industry->update($request, $id);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in updating Blogs' . $exception->getMessage());
+            throw new  \PDOException('Error in updating industry' . $exception->getMessage());
         }
         return response()->json([
             'status' => 'success',
@@ -135,14 +130,13 @@ class BlogController extends DashboardController
     public function destroy($id)
     {
         try {
-            $this->blog->delete($id);
+            $this->industry->delete($id);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in deleting Joblevel' . $exception->getMessage());
+            throw new  \PDOException('Error in deleting industry' . $exception->getMessage());
         }
         return response()->json([
             'status' => 'success',
             'message' => 'Deleted successfully',
         ], 200);
     }
-
 }

@@ -17,7 +17,7 @@ class CreateBlogsTable extends Migration
             $table->increments('blog_id');
             $table->string('blog_title');
             $table->integer('blog_category_id')->unsigned();
-            $table->foreign('blog_category_id')->references('blog_category_id')->on('blog_categories');
+            $table->foreign('blog_category_id')->references('blog_category_id')->on('blog_categories')->onUpdate('cascade')->onDelete('cascade');
             $table->longText('blog_description');
             $table->boolean('status');
             $table->timestamps();

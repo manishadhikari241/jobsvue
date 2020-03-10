@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Blogs\BlogRequest;
-use App\Model\Blog;
-use App\Repositories\Eloquent\EloquentBlogRepository;
+use App\Http\Requests\Admin\Company\CompanyPackageRequest;
+use App\Repositories\Eloquent\EloquentCompanyPackageRepository;
 use Illuminate\Http\Request;
 
-class BlogController extends DashboardController
+class CompanyPackageController extends DashboardController
 {
     /**
      * Display a listing of the resource.
@@ -16,24 +15,23 @@ class BlogController extends DashboardController
      * @return \Illuminate\Http\Response
      */
 
-    protected $blog;
+    protected $package;
 
-    public function __construct(EloquentBlogRepository $blog)
+    public function __construct(EloquentCompanyPackageRepository $package)
     {
         parent::__construct();
-        $this->blog=$blog;
+        $this->package=$package;
     }
 
     public function index()
     {
-//      $blogs=$this->blog->all();
-//       return new \App\Http\Resources\Blog($blogs);
-//        return response()->json([
-//           'status'=>'success',
-//           'blogs'=>$blogs
-//        ],200);
-    }
+        $pack=$this->package->getAll();
 
+        return response()->json([
+            'status' =>'success',
+            'company_package'=>$pack
+        ],200);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -50,17 +48,17 @@ class BlogController extends DashboardController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BlogRequest $request)
+    public function store(CompanyPackageRequest $request)
     {
         try {
-            $this->blog->store($request);
+            $this->package->store($request);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in saving Blog' . $exception->getMessage());
+            throw new  \PDOException('Error in saving Package' . $exception->getMessage());
         }
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Blog Successfully Added'
-            ], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Package Successfully Added'
+        ], 200);
     }
 
     /**
@@ -69,17 +67,14 @@ class BlogController extends DashboardController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-
-        $blog=$this->blog->getbyId($id);
+        $pack=$this->package->getById($id);
 
         return response()->json([
-            'status'=>'success',
-            'blog'=>$blog,
+            'status' =>'success',
+            'company_package'=>$pack
         ],200);
-
-
     }
 
     /**
@@ -103,11 +98,13 @@ class BlogController extends DashboardController
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'blog_title'=>'required|unique:blogs,blog_title','.$id.','blog_id',
-            'blog_category_id'=>'required|exists:blog_categories,blog_category_id',
-            'blog_description'=>'required',
-            'status'=>'required'
+            'package_name'=>'required|unique:company_packages,package_name,'.$id.',packages_id',
+            'price'=>'required',
+            'duration'=>'required|in:monthly,yearly',
+            'features'=>'required',
+            'status'=>'required|in:pending,publish'
         ]);
+
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json([
@@ -115,10 +112,9 @@ class BlogController extends DashboardController
             ],422);
         }
         try {
-            $this->blog->update($request, $id);
-
+            $this->package->update($request, $id);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in updating Blogs' . $exception->getMessage());
+            throw new  \PDOException('Error in updating company package' . $exception->getMessage());
         }
         return response()->json([
             'status' => 'success',
@@ -135,14 +131,13 @@ class BlogController extends DashboardController
     public function destroy($id)
     {
         try {
-            $this->blog->delete($id);
+            $this->package->delete($id);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in deleting Joblevel' . $exception->getMessage());
+            throw new  \PDOException('Error in deleting package' . $exception->getMessage());
         }
         return response()->json([
             'status' => 'success',
             'message' => 'Deleted successfully',
         ], 200);
     }
-
 }

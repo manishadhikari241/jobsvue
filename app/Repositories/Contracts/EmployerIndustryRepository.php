@@ -2,8 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface EmployerRepository
+interface EmployerIndustryRepository
 {
     public function store($request);
-
 }
