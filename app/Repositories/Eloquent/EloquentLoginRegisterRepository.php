@@ -7,6 +7,7 @@ use App\Repositories\Contracts\LoginRegisterRepository;
 
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 use GuzzleHttp;
+
 class EloquentLoginRegisterRepository extends AbstractRepository implements LoginRegisterRepository
 {
     public function entity()

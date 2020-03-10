@@ -2,14 +2,13 @@
     <v-row>
         <v-dialog v-model="editModal" max-width="500px">
             <v-form @submit.prevent="updateJobLevel">
-
                 <v-card>
                     <v-card-title>
                         <span class="headline"></span>
                     </v-card-title>
                     <v-card-text>
                         <v-container>
-                            <v-text-field label="Job Type" v-model="getEditJobLevel.job_level_name"
+                            <v-text-field label="Job Level" v-model="getEditJobLevel.job_level_name"
                                           required></v-text-field>
 
                             <v-select v-model="getEditJobLevel.status" :items="status" item-text="status"
@@ -25,12 +24,8 @@
                     </v-card-actions>
                 </v-card>
             </v-form>
-
         </v-dialog>
-
-
         <v-col col="12">
-
             <v-data-table
                     :headers="headers"
                     :items="getJobLevel"
@@ -90,6 +85,7 @@
 
                 // console.log(this.$store.state.jobs.jobLevel);
                 return this.$store.state.jobs.jobLevel.job_level;
+
             },
             getEditJobLevel() {
                 return this.$store.state.jobs.editJobLevel
@@ -124,15 +120,16 @@
             updateJobLevel() {
                 this.$store.dispatch('jobs/updateJobLevel', this.getEditJobLevel).then(function () {
                     this.dialog = this.$store.state.jobs.dialog;
-                    this.editModal = this.$store.state.jobs.editJobTypeModal;
+                    // this.editModal = this.$store.state.jobs.editJobTypeModal;
 
                 }.bind(this)).finally(() => {
                     setTimeout(() => {
                         this.dialog = this.$store.state.jobs.dialog;
-                        this.$store.dispatch('jobs/getJobTypes');
-                        this.editModal = this.$store.state.jobs.editJobTypeModal;
+                        this.$store.dispatch('jobs/getJobLevel');
+                        this.editModal = false;
+                        console.log(this.$store.state.jobs.editJobTypeModal);
 
-                    }, 600)
+                    }, 900)
                 });
             }
         }

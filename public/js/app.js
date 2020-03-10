@@ -3066,11 +3066,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3138,16 +3133,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$store.dispatch('jobs/updateJobLevel', this.getEditJobLevel).then(function () {
-        this.dialog = this.$store.state.jobs.dialog;
-        this.editModal = this.$store.state.jobs.editJobTypeModal;
+        this.dialog = this.$store.state.jobs.dialog; // this.editModal = this.$store.state.jobs.editJobTypeModal;
       }.bind(this))["finally"](function () {
         setTimeout(function () {
           _this2.dialog = _this2.$store.state.jobs.dialog;
 
-          _this2.$store.dispatch('jobs/getJobTypes');
+          _this2.$store.dispatch('jobs/getJobLevel');
 
-          _this2.editModal = _this2.$store.state.jobs.editJobTypeModal;
-        }, 600);
+          _this2.editModal = false;
+          console.log(_this2.$store.state.jobs.editJobTypeModal);
+        }, 900);
       });
     }
   }
@@ -45071,7 +45066,7 @@ var render = function() {
                         "v-container",
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Job Type", required: "" },
+                            attrs: { label: "Job Level", required: "" },
                             model: {
                               value: _vm.getEditJobLevel.job_level_name,
                               callback: function($$v) {
@@ -104748,6 +104743,9 @@ var mutations = {
   edit_job_level: function edit_job_level(state, payloads) {
     state.editJobLevel = payloads.data.job_level;
     state.editJobLevelModal = true;
+  },
+  update_job_level: function update_job_level(state, payloads) {
+    state.editJobLevelModal = false;
   }
 };
 var actions = {
@@ -104757,13 +104755,11 @@ var actions = {
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'POST',
       data: {
-        job_level: payloads.jobLevelName,
+        job_level_name: payloads.jobLevelName,
         status: payloads.status
       },
       url: '/api/admin/joblevel'
     }).then(function (response) {
-      console.log(response);
-
       if (response.data.status == 'success') {
         toastr.success(response.data.message);
         commit('job_level_added');
@@ -104816,7 +104812,8 @@ var actions = {
       data: payloads
     }).then(function (response) {
       commit('stop_load');
-      state.editJobLevelModalModal = false;
+      commit('update_job_level');
+      toastr.success(response.data.message);
     })["catch"](function (error) {
       if (error.response.status == 422) {
         console.log(error.response.data.errors);

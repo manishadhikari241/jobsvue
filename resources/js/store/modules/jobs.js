@@ -21,7 +21,7 @@ const mutations = {
      * Job types
      */
     initial_load(state, payload) {
-        state.dialog = true
+        state.dialog = true;
     },
     stop_load(state, payload) {
         state.dialog = false;
@@ -53,6 +53,10 @@ const mutations = {
     edit_job_level(state, payloads) {
         state.editJobLevel = payloads.data.job_level;
         state.editJobLevelModal = true
+    },
+    update_job_level(state, payloads) {
+        state.editJobLevelModal = false
+
     }
 
 
@@ -64,13 +68,12 @@ const actions = {
         axios({
             method: 'POST',
             data: {
-                job_level: payloads.jobLevelName,
+                job_level_name: payloads.jobLevelName,
                 status: payloads.status
             },
             url: '/api/admin/joblevel'
 
         }).then(function (response) {
-            console.log(response);
             if (response.data.status == 'success') {
                 toastr.success(response.data.message);
 
@@ -121,7 +124,8 @@ const actions = {
             data: payloads
         }).then(function (response) {
             commit('stop_load');
-            state.editJobLevelModalModal = false
+            commit('update_job_level');
+            toastr.success(response.data.message);
 
 
         }).catch(error => {

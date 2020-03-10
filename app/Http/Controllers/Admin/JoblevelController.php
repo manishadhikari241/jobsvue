@@ -23,17 +23,17 @@ class JoblevelController extends DashboardController
     public function __construct(EloquentJoblevelRepository $level)
     {
         parent::__construct();
-        $this->level=$level;
+        $this->level = $level;
     }
 
     public function index()
     {
-        $job_level=$this->level->getAll();
+        $job_level = $this->level->getAll();
 
         return response()->json([
-           'status' =>'success',
-            'job_level'=>$job_level
-        ],200);
+            'status' => 'success',
+            'job_level' => $job_level
+        ], 200);
     }
 
     /**
@@ -49,7 +49,7 @@ class JoblevelController extends DashboardController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(JoblevelRequest $request)
@@ -69,23 +69,23 @@ class JoblevelController extends DashboardController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $job_level=$this->level->getbyId($id);
+        $job_level = $this->level->getbyId($id);
 
         return response()->json([
-            'status'=>'success',
-            'job_level'=>$job_level,
-        ],200);
+            'status' => 'success',
+            'job_level' => $job_level,
+        ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -96,39 +96,39 @@ class JoblevelController extends DashboardController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'job_level'=>'required|unique:joblevels,job_level_name,'.$id.',job_level_id',
-            'status'=>'required'
+            'job_level_name' => 'required|unique:joblevels,job_level_name,' . $id . ',job_level_id',
+            'status' => 'required'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json([
                 "errors" => $errors
-            ],422);
+            ], 422);
         }
-            try {
-                $this->level->update_joblevel($request, $id);
+        try {
+            $this->level->update_joblevel($request, $id);
 
-            } catch (\Exception $exception) {
-                throw new  \PDOException('Error in updating Joblevel' . $exception->getMessage());
-            }
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Updated Successfully',
-            ], 200);
+        } catch (\Exception $exception) {
+            throw new  \PDOException('Error in updating Joblevel' . $exception->getMessage());
         }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Updated Successfully',
+        ], 200);
+    }
 
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
