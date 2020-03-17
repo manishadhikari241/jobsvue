@@ -52,4 +52,6 @@ class EloquentCityRepository extends AbstractRepository implements CityRepositor
         return $update;
     }
 
+
+
 }

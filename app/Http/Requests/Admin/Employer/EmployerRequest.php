@@ -30,7 +30,7 @@ class EmployerRequest extends FormRequest
     {
         return [
             'company_name'=>'required',
-            'company_email'=>'required',
+            'company_email'=>'required|email',
             'industry_id'=>'required|exists:employer_industries,industry_id',
             'city_id'=>'required|exists:cities,city_id',
             'location'=>'required',

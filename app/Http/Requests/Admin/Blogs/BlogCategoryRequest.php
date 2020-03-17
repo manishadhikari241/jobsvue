@@ -29,7 +29,7 @@ class BlogCategoryRequest extends FormRequest
     {
         return [
             'blog_category_name'=>'required|unique:blog_categories,blog_category_name',
-            'status'=>'required'
+            'status'=>'required|in:pending,publish',
         ];
     }
 

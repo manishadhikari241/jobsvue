@@ -2200,6 +2200,8 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = true;
     },
     updateCategories: function updateCategories() {
+      var _this2 = this;
+
       var form = document.getElementById('edit_category');
       var formData = new FormData(form);
       formData.append("_method", "put");
@@ -2210,7 +2212,14 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         toastr.success(response.data.message);
         Event.$emit('CategoryUpdated');
-      });
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this2.isLoading = false;
+          $.each(error.response.data.errors, function (key, value) {
+            toastr.warning(value);
+          });
+        }
+      })["finally"](function () {});
     }
   }
 });
@@ -2877,66 +2886,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "LocationDatatableComponent",
-  data: function data() {
-    return {
-      headers: [{
-        text: 'Locations',
-        align: 'left',
-        sortable: false,
-        value: 'location'
-      }, {
-        text: 'Actions',
-        value: 'actions'
-      }],
-      desserts: [{
-        value: false,
-        location: 'Frozen Yogurt'
-      }]
-    };
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _LocationDatatableComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocationDatatableComponent */ "./resources/js/components/PostJobs/LocationDatatableComponent.vue");
-//
-//
-//
-//
+/* harmony import */ var _JobLevelDatatableComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue");
 //
 //
 //
@@ -3006,22 +2965,444 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    LocationDatatableComponent: _LocationDatatableComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+    JobLevelDatatableComponent: _JobLevelDatatableComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
-      nameRules: [function (v) {
-        return !!v || 'Name is required';
-      } // v => v.length <= 10 || 'Name must be less than 10 characters',
-      ],
-      emailRules: [function (v) {
-        return !!v || 'E-mail is required';
-      }, function (v) {
-        return /.+@.+/.test(v) || 'E-mail must be valid';
+      jobLevelRules: [function (v) {
+        return !!v || 'Job Level Name Required';
+      }],
+      jobLevelStatusRules: [function (v) {
+        return !!v || 'Please choose Status';
+      }],
+      dialog: this.$store.state.jobs.dialog,
+      'status': [{
+        'id': 1,
+        'status': 'Active'
+      }, {
+        'id': 0,
+        'status': 'Inactive'
+      }],
+      jobLevelData: {
+        jobLevelName: '',
+        status: ''
+      }
+    };
+  },
+  methods: {
+    getJobLevel: function getJobLevel() {},
+    addJobLevel: function addJobLevel() {
+      var _this = this;
+
+      this.$store.dispatch('jobs/addJobLevel', this.jobLevelData).then(function () {
+        _this.dialog = _this.$store.state.jobs.dialog;
+      })["finally"](function () {
+        setTimeout(function () {
+          _this.dialog = _this.$store.state.jobs.dialog;
+
+          _this.$store.dispatch('jobs/getJobLevel');
+        }, 600);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editModal: this.$store.state.jobs.editJobLevelModal,
+      search: '',
+      headers: [{
+        text: 'Job Level',
+        align: 'left',
+        sortable: false,
+        value: 'job_level_name'
+      }, {
+        text: 'Status',
+        align: 'left',
+        sortable: false,
+        value: 'status'
+      }, {
+        text: 'Actions',
+        value: 'actions'
+      }],
+      items: [{
+        id: 1,
+        job_level_name: 'a'
       }]
     };
   },
-  name: "LocationsComponent"
+  mounted: function mounted() {
+    this.$store.dispatch('jobs/getJobLevel');
+  },
+  computed: {
+    getJobLevel: function getJobLevel() {
+      // console.log(this.$store.state.jobs.jobLevel);
+      return this.$store.state.jobs.jobLevel.job_level;
+    }
+  },
+  methods: {
+    close: function close() {
+      this.editModal = false;
+    },
+    deleteJobLevel: function deleteJobLevel(id) {
+      this.$dialog.confirm('Are you Sure You want to Delete?').then(function () {
+        this.$store.dispatch('jobs/deleteJobLevel', id).then(function () {
+          var _this = this;
+
+          setTimeout(function () {
+            _this.$store.dispatch('jobs/getJobLevel');
+          }, 600);
+        }.bind(this));
+      }.bind(this));
+    },
+    editJobLevel: function editJobLevel(id) {
+      this.$store.dispatch('jobs/editJobLevel', id);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      displayData: '',
+      dialog: this.$store.state.jobs.dialog,
+      jobData: {
+        jobTypeName: '',
+        status: ''
+      },
+      'status': [{
+        'id': 1,
+        'status': 'Active'
+      }, {
+        'id': 0,
+        'status': 'Inactive'
+      }],
+      JobTypesRules: [function (v) {
+        return !!v || 'Name is required';
+      } // v => v.length <= 10 || 'Name must be less than 10 characters',
+      ]
+    };
+  },
+  methods: {
+    addJobTypes: function addJobTypes() {
+      var _this = this;
+
+      this.$store.dispatch('jobs/addJobTypes', this.jobData).then(function () {
+        this.dialog = this.$store.state.jobs.dialog;
+      }.bind(this))["finally"](function () {
+        setTimeout(function () {
+          _this.dialog = _this.$store.state.jobs.dialog;
+
+          _this.$store.dispatch('jobs/getJobTypes');
+        }, 600);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      // getEditJobTypes:'',
+      search: '',
+      editModal: false,
+      'status': [{
+        'id': 1,
+        'status': 'Active'
+      }, {
+        'id': 0,
+        'status': 'Inactive'
+      }],
+      dialog: this.$store.state.jobs.dialog,
+      isLoading: false,
+      headers: [{
+        text: 'Job Level',
+        align: 'left',
+        sortable: false,
+        value: 'job_type_name'
+      }, {
+        text: 'Status',
+        value: 'status'
+      }, {
+        text: 'Actions',
+        value: 'actions'
+      }]
+    };
+  },
+  mounted: function mounted() {
+    this.$store.dispatch('jobs/getJobTypes');
+  },
+  computed: {
+    getTypes: function getTypes() {
+      return this.$store.state.jobs.jobtypes.job_type;
+    },
+    getEditJobTypes: function getEditJobTypes() {
+      return this.$store.state.jobs.editjobtypes;
+    }
+  },
+  methods: {
+    close: function close() {
+      this.editModal = false;
+    },
+    deleteJobTypes: function deleteJobTypes(id) {
+      this.$dialog.confirm('Are you Sure You want to Delete, Deleting Category will cause you to delete all the posts').then(function () {
+        this.$store.dispatch('jobs/deleteJobTypes', id).then(function () {
+          var _this = this;
+
+          setTimeout(function () {
+            _this.$store.dispatch('jobs/getJobTypes');
+          }, 600);
+        }.bind(this));
+      }.bind(this));
+    },
+    editJobTypes: function editJobTypes(id) {
+      this.editModal = true;
+      this.$store.dispatch('jobs/editJobTypes', id);
+    },
+    updateJobType: function updateJobType() {
+      var _this2 = this;
+
+      this.$store.dispatch('jobs/updateJobTypes', this.getEditJobTypes).then(function () {
+        this.dialog = this.$store.state.jobs.dialog;
+        this.editModal = this.$store.state.jobs.editJobTypeModal;
+      }.bind(this))["finally"](function () {
+        setTimeout(function () {
+          _this2.dialog = _this2.$store.state.jobs.dialog;
+
+          _this2.$store.dispatch('jobs/getJobTypes');
+
+          _this2.editModal = _this2.$store.state.jobs.editJobTypeModal;
+        }, 600);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3248,6 +3629,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -44409,9 +44799,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&":
 /*!**************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& ***!
   \**************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -44424,37 +44814,174 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-data-table", {
-    staticClass: "elevation-1",
-    attrs: { headers: _vm.headers, items: _vm.desserts, search: _vm.a },
-    scopedSlots: _vm._u([
-      {
-        key: "item.actions",
-        fn: function(ref) {
-          var item = ref.item
-          return [
-            _c(
-              "v-icon",
-              {
-                attrs: { dark: "", small: "" },
-                on: { click: function($event) {} }
-              },
-              [_vm._v("fa fa-edit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "v-icon",
-              {
-                attrs: { dark: "", small: "" },
-                on: { click: function($event) {} }
-              },
-              [_vm._v("fa fa-trash")]
-            )
-          ]
-        }
-      }
-    ])
-  })
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "6" } },
+            [
+              _c(
+                "v-form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.addJobLevel($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", [
+                        _vm._v(
+                          "\n                        Add Job Level\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-container",
+                            [
+                              _c(
+                                "v-row",
+                                [
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "6" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          counter: 20,
+                                          rules: _vm.jobLevelRules,
+                                          label: "Job Level",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.jobLevelData.jobLevelName,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.jobLevelData,
+                                              "jobLevelName",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "jobLevelData.jobLevelName"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "6" } },
+                                    [
+                                      _c("v-select", {
+                                        attrs: {
+                                          rules: _vm.jobLevelStatusRules,
+                                          items: _vm.status,
+                                          name: "status",
+                                          "item-text": "status",
+                                          "item-value": "id",
+                                          label: "Status"
+                                        },
+                                        model: {
+                                          value: _vm.jobLevelData.status,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.jobLevelData,
+                                              "status",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "jobLevelData.status"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { attrs: { type: "submit" } }, [
+                            _vm._v("Add")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("jobs-level-datatable"),
+      _vm._v(" "),
+      _c("v-row"),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "hide-overlay": "", persistent: "", width: "300" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            { attrs: { color: "primary", dark: "" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _vm._v("\n                Please stand by\n                "),
+                  _c("v-progress-linear", {
+                    staticClass: "mb-0",
+                    attrs: { indeterminate: "", color: "white" }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -44463,10 +44990,170 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true&":
-/*!******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true& ***!
-  \******************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-row",
+    [
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.editModal,
+            callback: function($$v) {
+              _vm.editModal = $$v
+            },
+            expression: "editModal"
+          }
+        },
+        [
+          _c(
+            "v-form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                }
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [_c("span", { staticClass: "headline" })]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { text: "", color: "blue darken-1" },
+                          on: { click: _vm.close }
+                        },
+                        [_vm._v("Cancel")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            color: "blue darken-1",
+                            type: "submit",
+                            text: ""
+                          }
+                        },
+                        [_vm._v("Update")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-col",
+        { attrs: { col: "12" } },
+        [
+          _c("v-data-table", {
+            staticClass: "elevation-1",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.getJobLevel,
+              search: _vm.search
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "item.actions",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.editJobLevel(item.job_level_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteJobLevel(item.job_level_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-trash")]
+                    )
+                  ]
+                }
+              },
+              {
+                key: "item.status",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    item.status == 1
+                      ? _c("v-icon", { attrs: { dark: "", small: "" } }, [
+                          _vm._v("fa fa-check")
+                        ])
+                      : _c("v-icon", { attrs: { dark: "", small: "" } }, [
+                          _vm._v("fa fa-times")
+                        ])
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44491,17 +45178,25 @@ var render = function() {
               _c(
                 "v-card",
                 [
-                  _c("v-card-title", [
-                    _vm._v(
-                      "\n                    Add Locations\n                "
-                    )
-                  ]),
-                  _vm._v(" "),
                   _c(
-                    "v-card-text",
+                    "v-form",
+                    {
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.addJobTypes($event)
+                        }
+                      }
+                    },
                     [
+                      _c("v-card-title", [
+                        _vm._v(
+                          "\n                        Add Job Types\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
                       _c(
-                        "v-form",
+                        "v-card-text",
                         [
                           _c(
                             "v-container",
@@ -44511,14 +45206,25 @@ var render = function() {
                                 [
                                   _c(
                                     "v-col",
-                                    { attrs: { cols: "12", md: "4" } },
+                                    { attrs: { cols: "12", md: "6" } },
                                     [
                                       _c("v-text-field", {
                                         attrs: {
-                                          rules: _vm.nameRules,
-                                          counter: 10,
-                                          label: "Zone",
+                                          rules: _vm.JobTypesRules,
+                                          counter: 20,
+                                          label: "Job Type",
                                           required: ""
+                                        },
+                                        model: {
+                                          value: _vm.jobData.jobTypeName,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.jobData,
+                                              "jobTypeName",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "jobData.jobTypeName"
                                         }
                                       })
                                     ],
@@ -44527,29 +45233,21 @@ var render = function() {
                                   _vm._v(" "),
                                   _c(
                                     "v-col",
-                                    { attrs: { cols: "12", md: "4" } },
+                                    { attrs: { cols: "12", md: "6" } },
                                     [
-                                      _c("v-text-field", {
+                                      _c("v-select", {
                                         attrs: {
-                                          rules: _vm.nameRules,
-                                          counter: 15,
-                                          label: "Last name",
-                                          required: ""
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-col",
-                                    { attrs: { cols: "12", md: "4" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          rules: _vm.emailRules,
-                                          label: "E-mail",
-                                          required: ""
+                                          items: _vm.status,
+                                          "item-text": "status",
+                                          label: "Status",
+                                          "item-value": "id"
+                                        },
+                                        model: {
+                                          value: _vm.jobData.status,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.jobData, "status", $$v)
+                                          },
+                                          expression: "jobData.status"
                                         }
                                       })
                                     ],
@@ -44561,6 +45259,16 @@ var render = function() {
                             ],
                             1
                           )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { attrs: { type: "submit" } }, [
+                            _vm._v("Add")
+                          ])
                         ],
                         1
                       )
@@ -44577,20 +45285,282 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _c("job-type-datatable"),
+      _vm._v(" "),
       _c(
-        "v-row",
+        "v-dialog",
+        {
+          attrs: { "hide-overlay": "", persistent: "", width: "300" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
         [
           _c(
-            "v-col",
-            { attrs: { col: "12" } },
-            [_c("location-datatable-component")],
+            "v-card",
+            { attrs: { color: "primary", dark: "" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _vm._v("\n                Please stand by\n                "),
+                  _c("v-progress-linear", {
+                    staticClass: "mb-0",
+                    attrs: { indeterminate: "", color: "white" }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-row",
+    [
+      _c(
+        "v-dialog",
+        {
+          attrs: { "hide-overlay": "", persistent: "", width: "300" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            { attrs: { color: "primary", dark: "" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _vm._v(
+                    "\n                Updating Your Data, Please Stand By\n                "
+                  ),
+                  _c("v-progress-linear", {
+                    staticClass: "mb-0",
+                    attrs: { indeterminate: "", color: "white" }
+                  })
+                ],
+                1
+              )
+            ],
             1
           )
         ],
         1
       ),
       _vm._v(" "),
-      _c("v-row")
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.editModal,
+            callback: function($$v) {
+              _vm.editModal = $$v
+            },
+            expression: "editModal"
+          }
+        },
+        [
+          _c(
+            "v-form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.updateJobType($event)
+                }
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [_c("span", { staticClass: "headline" })]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-container",
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Job Type", required: "" },
+                            model: {
+                              value: _vm.getEditJobTypes.job_type_name,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.getEditJobTypes,
+                                  "job_type_name",
+                                  $$v
+                                )
+                              },
+                              expression: "getEditJobTypes.job_type_name"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.status,
+                              "item-text": "status",
+                              "item-value": "id",
+                              label: "Status"
+                            },
+                            model: {
+                              value: _vm.getEditJobTypes.status,
+                              callback: function($$v) {
+                                _vm.$set(_vm.getEditJobTypes, "status", $$v)
+                              },
+                              expression: "getEditJobTypes.status"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { text: "", color: "blue darken-1" },
+                          on: { click: _vm.close }
+                        },
+                        [_vm._v("Cancel")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            color: "blue darken-1",
+                            type: "submit",
+                            text: ""
+                          }
+                        },
+                        [_vm._v("Update")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-col",
+        { attrs: { col: "12" } },
+        [
+          _c("v-data-table", {
+            staticClass: "elevation-1",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.getTypes,
+              search: _vm.search,
+              loading: _vm.isLoading
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "item.actions",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.editJobTypes(item.job_type_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteJobTypes(item.job_type_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-trash")]
+                    )
+                  ]
+                }
+              },
+              {
+                key: "item.status",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    item.status == 1
+                      ? _c("v-icon", { attrs: { dark: "", small: "" } }, [
+                          _vm._v("fa fa-check")
+                        ])
+                      : _c("v-icon", [_vm._v("fa fa-times")])
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -45075,8 +46045,33 @@ var render = function() {
                             [
                               _c(
                                 "router-link",
-                                { attrs: { to: "/admins/locations" } },
-                                [_vm._v("Add Locations")]
+                                { attrs: { to: "/admins/jobLevel" } },
+                                [_vm._v("Job Level")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    { attrs: { link: "" } },
+                    [
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c(
+                            "v-list-item-title",
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "/admins/jobTypes" } },
+                                [_vm._v("Job Types")]
                               )
                             ],
                             1
@@ -45247,7 +46242,7 @@ var render = function() {
                         [
                           _c("v-list-item-title", [
                             _vm._v(
-                              "\n                            asd                        "
+                              "\n                            asd\n                        "
                             )
                           ])
                         ],
@@ -102830,7 +103825,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('dashboard-component', __we
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('category-component', __webpack_require__(/*! ./components/Category/CategoryComponent.vue */ "./resources/js/components/Category/CategoryComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('setting-component', __webpack_require__(/*! ./components/Settings/SettingComponent */ "./resources/js/components/Settings/SettingComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('login', __webpack_require__(/*! ./components/Login/LoginComponent */ "./resources/js/components/Login/LoginComponent.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('location-datatable', __webpack_require__(/*! ./components/PostJobs/LocationDatatableComponent */ "./resources/js/components/PostJobs/LocationDatatableComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('jobs-level-datatable', __webpack_require__(/*! ./components/PostJobs/JobLevel/JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('job-type-datatable', __webpack_require__(/*! ./components/PostJobs/JobTypes/JobTypesDatatableComponent */ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue")["default"]);
 new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   router: router,
   vuetify: _vuetify_vuetify__WEBPACK_IMPORTED_MODULE_5__["default"],
@@ -103095,18 +104091,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/LocationDatatableComponent.vue":
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue":
 /*!*************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/LocationDatatableComponent.vue ***!
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue ***!
   \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _LocationDatatableComponent_vue_vue_type_template_id_344d20ac_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true& */ "./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true&");
-/* harmony import */ var _LocationDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LocationDatatableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& */ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&");
+/* harmony import */ var _JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLevelComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -103115,67 +104111,67 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _LocationDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _LocationDatatableComponent_vue_vue_type_template_id_344d20ac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _LocationDatatableComponent_vue_vue_type_template_id_344d20ac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "344d20ac",
+  "8642e4a8",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/PostJobs/LocationDatatableComponent.vue"
+component.options.__file = "resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js& ***!
   \**************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LocationDatatableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true&":
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&":
 /*!********************************************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true& ***!
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& ***!
   \********************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationDatatableComponent_vue_vue_type_template_id_344d20ac_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationDatatableComponent.vue?vue&type=template&id=344d20ac&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationDatatableComponent_vue_vue_type_template_id_344d20ac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue?vue&type=template&id=8642e4a8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationDatatableComponent_vue_vue_type_template_id_344d20ac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelComponent_vue_vue_type_template_id_8642e4a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/LocationsComponent.vue":
-/*!*****************************************************************!*\
-  !*** ./resources/js/components/PostJobs/LocationsComponent.vue ***!
-  \*****************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue ***!
+  \**********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _LocationsComponent_vue_vue_type_template_id_e64e9446_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true& */ "./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true&");
-/* harmony import */ var _LocationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LocationsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&");
+/* harmony import */ var _JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLevelDatatableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -103184,50 +104180,188 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _LocationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _LocationsComponent_vue_vue_type_template_id_e64e9446_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _LocationsComponent_vue_vue_type_template_id_e64e9446_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "e64e9446",
+  "7a46ea5a",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/PostJobs/LocationsComponent.vue"
+component.options.__file = "resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LocationsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelDatatableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true&":
-/*!************************************************************************************************************!*\
-  !*** ./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true& ***!
-  \************************************************************************************************************/
+/***/ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&":
+/*!*****************************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& ***!
+  \*****************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationsComponent_vue_vue_type_template_id_e64e9446_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/LocationsComponent.vue?vue&type=template&id=e64e9446&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationsComponent_vue_vue_type_template_id_e64e9446_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue?vue&type=template&id=7a46ea5a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationsComponent_vue_vue_type_template_id_e64e9446_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JobTypesComponent_vue_vue_type_template_id_1fd6a3e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true& */ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true&");
+/* harmony import */ var _JobTypesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobTypesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JobTypesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JobTypesComponent_vue_vue_type_template_id_1fd6a3e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobTypesComponent_vue_vue_type_template_id_1fd6a3e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "1fd6a3e8",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobTypesComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true& ***!
+  \********************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesComponent_vue_vue_type_template_id_1fd6a3e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue?vue&type=template&id=1fd6a3e8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesComponent_vue_vue_type_template_id_1fd6a3e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesComponent_vue_vue_type_template_id_1fd6a3e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JobTypesDatatableComponent_vue_vue_type_template_id_4d7f35fa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true& */ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true&");
+/* harmony import */ var _JobTypesDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobTypesDatatableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JobTypesDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JobTypesDatatableComponent_vue_vue_type_template_id_4d7f35fa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobTypesDatatableComponent_vue_vue_type_template_id_4d7f35fa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "4d7f35fa",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobTypesDatatableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true&":
+/*!*****************************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true& ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesDatatableComponent_vue_vue_type_template_id_4d7f35fa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue?vue&type=template&id=4d7f35fa&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesDatatableComponent_vue_vue_type_template_id_4d7f35fa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobTypesDatatableComponent_vue_vue_type_template_id_4d7f35fa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -103465,9 +104599,13 @@ var routes = [{
     name: 'settings',
     component: __webpack_require__(/*! ../components/Settings/SettingComponent */ "./resources/js/components/Settings/SettingComponent.vue")["default"]
   }, {
-    path: 'locations',
-    name: 'locations',
-    component: __webpack_require__(/*! ../components/PostJobs/LocationsComponent */ "./resources/js/components/PostJobs/LocationsComponent.vue")["default"]
+    path: 'jobLevel',
+    name: 'jobLevel',
+    component: __webpack_require__(/*! ../components/PostJobs/JobLevel/JobLevelComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelComponent.vue")["default"]
+  }, {
+    path: 'jobTypes',
+    name: 'jobTypes',
+    component: __webpack_require__(/*! ../components/PostJobs/JobTypes/JobTypesComponent */ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue")["default"]
   }, {
     path: 'postjobs',
     name: 'postjobs',
@@ -103478,6 +104616,193 @@ var routes = [{
   component: __webpack_require__(/*! ../components/Login/LoginComponent */ "./resources/js/components/Login/LoginComponent.vue")["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (routes);
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/jobs.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/jobs.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  dialog: false,
+  jobtypes: '',
+  editjobtypes: '',
+  editJobTypeModal: true,
+  editJobLevelModal: false,
+  jobLevel: ''
+};
+var getters = {};
+var mutations = {
+  /**
+   * @param state
+   * @param payload
+   * Job types
+   */
+  initial_load: function initial_load(state, payload) {
+    state.dialog = true;
+  },
+  stop_load: function stop_load(state, payload) {
+    state.dialog = false;
+  },
+  job_types_added: function job_types_added(payloads) {
+    state.dialog = false;
+    toastr.success('Job Types Added');
+  },
+  get_job_types: function get_job_types(state, payloads) {
+    state.jobtypes = payloads.data;
+    state.dialog = false;
+  },
+  edit_job_types: function edit_job_types(state, payloads) {
+    state.editjobtypes = payloads.data.job_type;
+  },
+
+  /**
+   *Job Level
+   */
+  job_level_added: function job_level_added(state, payloads) {
+    state.dialog = false;
+  },
+  get_job_level: function get_job_level(state, payloads) {
+    state.jobLevel = payloads.data;
+  }
+};
+var actions = {
+  addJobLevel: function addJobLevel(_ref, payloads) {
+    var commit = _ref.commit;
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'POST',
+      data: {
+        job_level: payloads.jobLevelName,
+        status: payloads.status
+      },
+      url: '/api/admin/joblevel'
+    }).then(function (response) {
+      console.log(response);
+
+      if (response.data.status == 'success') {
+        toastr.success(response.data.message);
+        commit('job_level_added');
+      }
+    })["catch"](function (error) {});
+  },
+  getJobLevel: function getJobLevel(_ref2, state) {
+    var commit = _ref2.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: '/api/admin/joblevel'
+    }).then(function (response) {
+      commit('get_job_level', response);
+    });
+  },
+  deleteJobLevel: function deleteJobLevel(_ref3, payloads) {
+    var commit = _ref3.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'DELETE',
+      url: "/api/admin/joblevel/".concat(payloads)
+    }).then(function (response) {
+      toastr.success(response.data.message);
+    });
+  },
+  editJobLevel: function editJobLevel(_ref4, payloads) {
+    var commit = _ref4.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: "/api/admin/joblevel/".concat(payloads)
+    }).then(function (response) {
+      console.log(response);
+    });
+  },
+  addJobTypes: function addJobTypes(_ref5, payloads) {
+    var commit = _ref5.commit,
+        state = _ref5.state;
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'POST',
+      data: {
+        job_type_name: payloads.jobTypeName,
+        status: payloads.status
+      },
+      url: '/api/admin/jobtype'
+    }).then(function (response) {
+      commit('job_types_added');
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        console.log(error.response.data.errors);
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+      }
+    });
+  },
+  getJobTypes: function getJobTypes(_ref6, state) {
+    var commit = _ref6.commit;
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: '/api/admin/jobtype'
+    }).then(function (response) {
+      // console.log(response.data);
+      commit('get_job_types', response);
+    }.bind(this))["catch"](function (error) {});
+  },
+  deleteJobTypes: function deleteJobTypes(_ref7, payloads) {
+    var commit = _ref7.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      url: "/api/admin/jobtype/".concat(payloads),
+      method: 'Delete'
+    }).then(function (response) {
+      toastr.success(response.data.message); // console.log(response.data.message);
+    });
+  },
+  editJobTypes: function editJobTypes(_ref8, payloads) {
+    var commit = _ref8.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: "/api/admin/jobtype/".concat(payloads)
+    }).then(function (response) {
+      commit('edit_job_types', response);
+    });
+  },
+  updateJobTypes: function updateJobTypes(_ref9, payloads) {
+    var commit = _ref9.commit,
+        state = _ref9.state;
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'PATCH',
+      url: "/api/admin/jobtype/".concat(payloads.job_type_id),
+      data: payloads
+    }).then(function (response) {
+      commit('stop_load');
+      state.editJobTypeModal = false;
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        console.log(error.response.data.errors);
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+        state.editJobTypeModal = true;
+      }
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions,
+  namespaced: true
+});
 
 /***/ }),
 
@@ -103561,13 +104886,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/settings */ "./resources/js/store/modules/settings.js");
+/* harmony import */ var _modules_jobs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/jobs */ "./resources/js/store/modules/jobs.js");
+
 
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
-    settings: _modules_settings__WEBPACK_IMPORTED_MODULE_2__["default"]
+    settings: _modules_settings__WEBPACK_IMPORTED_MODULE_2__["default"],
+    jobs: _modules_jobs__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 });
 

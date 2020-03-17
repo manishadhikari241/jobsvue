@@ -31,7 +31,7 @@ class BlogRequest extends FormRequest
             'blog_title'=>'required|unique:blogs,blog_title',
             'blog_category_id'=>'required|exists:blog_categories,blog_category_id',
             'blog_description'=>'required',
-            'status'=>'required',
+            'status'=>'required|in:pending,publish',
         ];
     }
 

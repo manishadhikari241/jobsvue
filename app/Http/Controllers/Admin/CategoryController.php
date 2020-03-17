@@ -7,6 +7,7 @@ use App\Http\Requests\JobsCategory;
 use App\Model\Category;
 use App\Repositories\Eloquent\EloquentJobsCategoryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends DashboardController
 {
@@ -88,6 +89,7 @@ class CategoryController extends DashboardController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
+
     public function edit($id)
     {
         $category = Category::findorfail($id);
@@ -115,9 +117,12 @@ class CategoryController extends DashboardController
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'category_name' => 'required|min:2|max:20|unique:categories,category_name,' . $id
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()],422);
+        }
         try {
             $this->category->update_product($request, $id);
 

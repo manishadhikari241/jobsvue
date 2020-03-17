@@ -23,10 +23,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::get('/', 'EmployerController@index')->name('employer.index');
     });
 
+
     Route::resource('category', 'CategoryController');
     Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
 
-    Route::apiResource('job-level','JoblevelController');
+    Route::apiResource('joblevel','JoblevelController');
     Route::apiResource('job-type','JobtypeController');
     Route::apiResource('blog-category','BlogCategoryController');
     Route::apiResource('blogs','BlogController');
@@ -37,6 +38,15 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::apiResource('city','CityController');
     Route::apiResource('employer-industry','EmployerIndustryController');
     Route::apiResource('employer','EmployerController');
+
+    Route::apiResource('joblevel','JoblevelController');
+    Route::apiResource('jobtype','JobtypeController');
+    Route::apiResource('blogcategory','BlogCategoryController');
+    Route::apiResource('currency','CurrencyController');
+    Route::apiResource('jobvacancy','JobVacancyController');
+});
+Route::group(['namespace' => 'Auths', 'as' => 'auth.'], function () {
+    Route::post('register-users', 'RegisterController@register')->name('register');
 });
 
 Route::apiResource('about', 'AboutController');

@@ -178,6 +178,7 @@
 
 
                     }).catch(error => {
+
                     if (error.response.status == 422) {
                         this.isLoading = false;
 
@@ -290,6 +291,19 @@
                     toastr.success(response.data.message);
 
                     Event.$emit('CategoryUpdated');
+
+                }).catch(error => {
+                    if (error.response.status == 422) {
+                        this.isLoading = false;
+
+                        $.each(error.response.data.errors, function (key, value) {
+                            toastr.warning(value);
+
+                        });
+
+                    }
+                }).finally(function () {
+
 
                 });
             },
