@@ -31,14 +31,19 @@ const routes = [
                 path: 'postjobs',
                 name: 'postjobs',
                 component: require('../components/PostJobs/PostJobsComponent').default
+            },
+            {
+                path: 'company_packages',
+                name: 'company_packages',
+                component: require('../components/Employer/CompanyPackagesComponent').default
             }
 
         ]
     },
     {
         path: '/login', component: require('../components/Login/LoginComponent').default,
-
     },
+
 
 ];
 

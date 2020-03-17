@@ -28,8 +28,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::match(['get', 'post'], 'setting', 'SettingController@setting')->name('setting');
 
 
-    Route::apiResource('job-level','JoblevelController');
-    Route::apiResource('job-type','JobtypeController');
+    Route::apiResource('joblevel','JoblevelController');
+    Route::apiResource('jobtype','JobtypeController');
     Route::apiResource('blog-category','BlogCategoryController');
     Route::apiResource('blogs','BlogController');
     Route::get('/blogs', function () {

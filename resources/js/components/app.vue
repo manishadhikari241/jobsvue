@@ -37,7 +37,6 @@
                     </template>
 
                     <v-list-item link>
-
                         <v-list-item-content>
                             <v-list-item-title>
                                 <router-link to="/admins/jobLevel">Job Level</router-link>
@@ -76,7 +75,7 @@
 
                         <v-list-item-content>
                             <v-list-item-title>
-                                Employer Requests
+                                <router-link to="/admins/company_packages">Company Packages</router-link>
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>

@@ -28,11 +28,11 @@ class CompanyPackageRequest extends FormRequest
     public function rules()
     {
         return [
-            'package_name'=>'required|unique:company_packages,package_name',
-            'price'=>'required',
-            'duration'=>'required|in:monthly,yearly',
-            'features'=>'required',
-            'status'=>'required|in:pending,publish'
+            'package_name' => 'required|unique:company_packages,package_name',
+            'price' => 'required',
+            'duration' => 'required|in:monthly,yearly',
+            'features' => 'required',
+            'status' => 'required|in:pending,publish'
         ];
     }
 

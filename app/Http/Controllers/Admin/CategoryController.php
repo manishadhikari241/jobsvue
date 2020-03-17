@@ -26,6 +26,7 @@ class CategoryController extends DashboardController
         $this->category = $category;
     }
 
+
     public function index()
     {
         $category = Category::all();
@@ -40,6 +41,7 @@ class CategoryController extends DashboardController
 
 
     }
+
 
     /**
      * Show the form for creating a new resource.

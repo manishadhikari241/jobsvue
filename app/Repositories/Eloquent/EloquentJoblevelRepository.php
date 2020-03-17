@@ -23,32 +23,32 @@ class EloquentJoblevelRepository extends AbstractRepository implements JoblevelR
 
     public function getbyId($id)
     {
-        $job_level=$this->entity()::find($id);
+        $job_level = $this->entity()::find($id);
         return $job_level;
     }
 
 
     public function store($request)
     {
-       $data['job_level_name']=$request->job_level_name;
-       $data['status']=$request->status;
-       $create=$this->entity()::create($data);
-       return $create;
+        $data['job_level_name'] = $request->job_level_name;
+        $data['status'] = $request->status;
+        $create = $this->entity()::create($data);
+        return $create;
     }
 
     public function update_joblevel($request, $id)
     {
         $find = $this->entity()::find($id);
-        $data['job_level_name']=$request->job_level_name;
-        $data['status']=$request->status;
+        $data['job_level_name'] = $request->job_level_name;
+        $data['status'] = $request->status;
         $update = $find->update($data);
         return $update;
     }
 
     public function delete_joblevel($id)
     {
-        $find=$this->entity()::find($id);
-        $del=$find->delete();
+        $find = $this->entity()::find($id);
+        $del = $find->delete();
         return $del;
     }
 }

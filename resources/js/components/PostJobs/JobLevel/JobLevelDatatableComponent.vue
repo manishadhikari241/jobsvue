@@ -55,7 +55,6 @@
 
                 search: '',
                 headers: [
-
                     {
                         text: 'Job Level',
                         align: 'left',
@@ -103,7 +102,6 @@
 
                             this.$store.dispatch('jobs/getJobLevel');
                         }, 600)
-
                     }.bind(this));
                 }.bind(this));
 
