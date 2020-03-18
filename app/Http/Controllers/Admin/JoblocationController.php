@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Jobs\JoblocationRequest;
+use App\Model\Joblocation;
 use App\Repositories\Eloquent\EloquentJoblocationRepository;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,11 @@ class JoblocationController extends DashboardController
 
     public function index()
     {
-        //
+        $pack=$this->location->getAll();
+
+        return response()->json([
+            'job_location'=>$pack
+        ],200);
     }
 
     /**
@@ -43,9 +49,18 @@ class JoblocationController extends DashboardController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JoblocationRequest $request)
     {
-        //
+        try {
+            $this->location->store($request);
+        } catch (\Exception $exception) {
+            throw new  \PDOException('Error in saving Joblocation' . $exception->getMessage());
+        } finally {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Job location Successfully Added'
+            ], 200);
+        }
     }
 
     /**
@@ -56,7 +71,11 @@ class JoblocationController extends DashboardController
      */
     public function show($id)
     {
-        //
+        $pack=$this->location->getbyId($id);
+
+        return response()->json([
+            'job_location'=>$pack
+        ],200);
     }
 
     /**
@@ -79,7 +98,27 @@ class JoblocationController extends DashboardController
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'location_name'=>'required|unique:joblocations,location_name,'.$id.',location_id',
+            'image'=>'required',
+            'status'=>'required|in:pending,publish'
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return response()->json([
+                "errors" => $errors
+            ],422);
+        }
+        try {
+            $this->location->update($request, $id);
+        } catch (\Exception $exception) {
+            throw new  \PDOException('Error in updating job location' . $exception->getMessage());
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Updated Successfully',
+        ], 200);
     }
 
     /**
@@ -90,6 +129,14 @@ class JoblocationController extends DashboardController
      */
     public function destroy($id)
     {
-        //
+        try {
+            $this->location->delete($id);
+        } catch (\Exception $exception) {
+            throw new  \PDOException('Error in deleting joblocation' . $exception->getMessage());
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deleted successfully',
+        ], 200);
     }
 }
