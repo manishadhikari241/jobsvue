@@ -1,14 +1,29 @@
 import axios from "axios";
 
 const state = {
+    /*
+    Global
+     */
     dialog: false,
+
+    /*
+    jobType
+     */
     jobtypes: '',
     editjobtypes: '',
     editJobTypeModal: true,
-
+    /*
+    JobLevel
+     */
     editJobLevelModal: false,
     jobLevel: '',
-    editJobLevel: ''
+    editJobLevel: '',
+    /*
+    JobCurrency
+     */
+    jobCurrency: '',
+    editJobCurrency: '',
+    editJobCurrencyModal: false
 
 };
 const getters = {};
@@ -56,7 +71,20 @@ const mutations = {
     },
     update_job_level(state, payloads) {
         state.editJobLevelModal = false
+    },
 
+    /*
+    Job Currency
+     */
+    job_currency_added(state) {
+        state.dialog = false;
+    },
+    get_jobs_currency(state, payloads) {
+        state.jobCurrency = payloads.data;
+    },
+    edit_job_currency(state, payloads) {
+        state.editJobCurrency = payloads.data.currency;
+        state.editJobCurrencyModal = true
     }
 
 
@@ -141,7 +169,9 @@ const actions = {
             }
         });
     },
-
+    /*
+    JobTypes
+     */
 
     addJobTypes({commit, state}, payloads) {
         commit('initial_load');
@@ -203,7 +233,8 @@ const actions = {
             data: payloads
         }).then(function (response) {
             commit('stop_load');
-            state.editJobTypeModal = false
+            state.editJobTypeModal = false;
+            toastr.success(response.data.message);
 
 
         }).catch(error => {
@@ -218,7 +249,95 @@ const actions = {
 
             }
         });
+    },
+
+    /*
+    Job Currency
+     */
+    addJobCurrency({commit}, payloads) {
+        commit('initial_load');
+        axios({
+            method: 'POST',
+            data: payloads,
+            url: '/api/admin/currency'
+
+        }).then(function (response) {
+            if (response.data.status == 'success') {
+                toastr.success(response.data.message);
+
+                commit('job_currency_added');
+            }
+        }).catch(error => {
+            if (error.response.status == 422) {
+                console.log(error.response.data.errors);
+                $.each(error.response.data.errors, function (key, value) {
+                    toastr.warning(value);
+
+                });
+                commit('stop_load');
+            }
+        });
+    },
+    getJobCurrency({commit}) {
+        commit('initial_load');
+        axios({
+            method: 'GET',
+            url: '/api/admin/currency'
+        }).then(function (response) {
+            commit('get_jobs_currency', response)
+        }.bind(this)).catch(error => {
+
+        });
+    },
+    deleteJobCurrency({commit}, payloads) {
+        axios({
+            url: `/api/admin/currency/${payloads}`,
+            method: 'Delete'
+        }).then(function (response) {
+            toastr.success(response.data.message);
+
+            // console.log(response.data.message);
+        })
+    },
+    editJobCurrency({commit}, payloads) {
+        axios({
+            method: 'GET',
+            url: `/api/admin/currency/${payloads}`
+        }).then(function (response) {
+            commit('edit_job_currency', response);
+        });
+    },
+    updateJobCurrency({commit}, payloads) {
+        commit('initial_load');
+        axios({
+            method: 'PATCH',
+            url: `/api/admin/currency/${payloads.currency_id}`,
+            data: payloads
+        }).then(function (response) {
+            commit('stop_load');
+            state.editJobCurrencyModal = false
+            toastr.success(response.data.message);
+
+
+        }).catch(error => {
+            if (error.response.status == 422) {
+                console.log(error.response.data.errors);
+                $.each(error.response.data.errors, function (key, value) {
+                    toastr.warning(value);
+
+                });
+                commit('stop_load');
+                state.editJobCurrencyModal = true
+
+            }
+        });
     }
+
+    /*
+    Job Location
+     */
+
+
 };
 
 export default {

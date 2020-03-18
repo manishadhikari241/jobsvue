@@ -30,6 +30,7 @@ Vue.component('setting-component', require('./components/Settings/SettingCompone
 Vue.component('login', require('./components/Login/LoginComponent').default);
 Vue.component('jobs-level-datatable', require('./components/PostJobs/JobLevel/JobLevelDatatableComponent').default);
 Vue.component('job-type-datatable', require('./components/PostJobs/JobTypes/JobTypesDatatableComponent').default);
+Vue.component('job-currency-datatable', require('./components/PostJobs/JobCurrency/JobCurrencyDatatableComponent').default);
 Vue.component('company-package-datatable', require('./components/Employer/CompanyPackagesDatatableComponent').default);
 Vue.component('employer-city-datatable', require('./components/Employer/EmployerCityDatatableComponent').default);
 
