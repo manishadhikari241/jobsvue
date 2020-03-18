@@ -45,7 +45,9 @@ class JobvacancyRequest extends FormRequest
             'valid_date'=>'required',
             'status'=>'required|in:expired,active',
             'viewed'=>'required',
-            'job_location'=>'required',
+            'location_id'=>'required|exists:joblocations,location_id',
+            'applicants'=>'required'
+
         ];
     }
 

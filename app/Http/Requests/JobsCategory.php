@@ -30,8 +30,6 @@ class JobsCategory extends FormRequest
      */
     public function rules()
     {
-
-
         return [
             'category_name' => 'required|min:2|max:20|unique:categories',
             'status' => 'required'
