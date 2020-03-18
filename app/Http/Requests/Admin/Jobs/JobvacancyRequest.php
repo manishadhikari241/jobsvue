@@ -29,7 +29,7 @@ class JobvacancyRequest extends FormRequest
     {
         return [
             'employer_id'=>'required|exists:employers,employer_id',
-            'job_title'=>'required',
+            'job_title'=>'required|unique:job_vacancies,job_title',
             'job_description'=>'required',
             'no_of_vacancy'=>'required',
             'skills'=>'required',

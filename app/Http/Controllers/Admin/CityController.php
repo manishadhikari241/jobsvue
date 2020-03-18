@@ -56,7 +56,6 @@ class CityController extends DashboardController
             throw new  \PDOException('Error in saving City' . $exception->getMessage());
         }
         return response()->json([
-            'status' => 'success',
             'message' => 'City Successfully Added'
         ], 200);
     }
@@ -72,7 +71,6 @@ class CityController extends DashboardController
         $pack=$this->city->getbyId($id);
 
         return response()->json([
-            'status' =>'success',
             'city'=>$pack
         ],200);
     }
