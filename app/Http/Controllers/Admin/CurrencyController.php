@@ -3,35 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Blogs\BlogRequest;
-use App\Model\Blog;
-use App\Repositories\Eloquent\EloquentBlogRepository;
+use App\Http\Requests\Admin\Jobs\CurrencyRequest;
+use App\Repositories\Eloquent\EloquentCurrencyRepository;
 use Illuminate\Http\Request;
 
-class BlogController extends DashboardController
+class CurrencyController extends DashboardController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    protected $currency;
 
-    protected $blog;
-
-    public function __construct(EloquentBlogRepository $blog)
+    public function __construct(EloquentCurrencyRepository $currency)
     {
         parent::__construct();
-        $this->blog=$blog;
+        $this->currency=$currency;
     }
 
     public function index()
     {
-      $blogs=$this->blog->all();
-       return new \App\Http\Resources\Blog($blogs);
-//        return response()->json([
-//           'status'=>'success',
-//           'blogs'=>$blogs
-//        ],200);
+        $all=$this->currency->getAll();
+
+        return response()->json([
+            'currency'=>$all,
+        ],200);
     }
 
     /**
@@ -50,17 +47,17 @@ class BlogController extends DashboardController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BlogRequest $request)
+    public function store(CurrencyRequest $request)
     {
         try {
-            $this->blog->store($request);
+            $this->currency->store($request);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in saving Blog' . $exception->getMessage());
+            throw new  \PDOException('Error in saving currency' . $exception->getMessage());
         }
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Blog Successfully Added'
-            ], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Blog Successfully Added'
+        ], 200);
     }
 
     /**
@@ -69,14 +66,13 @@ class BlogController extends DashboardController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
+        $all=$this->currency->getbyId($id);
 
-        $blog=$this->blog->getbyId($id);
-
-        return new \App\Http\Resources\Blog($blog);
-
-
+        return response()->json([
+            'currency'=>$all,
+        ],200);
     }
 
     /**
@@ -100,10 +96,9 @@ class BlogController extends DashboardController
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'blog_title'=>'required|unique:blogs,blog_title','.$id.','blog_id',
-            'blog_category_id'=>'required|exists:blog_categories,blog_category_id',
-            'blog_description'=>'required',
-            'status'=>'required'
+            'currency_name'=>'required|unique:currencies,currency_name,'.$id.',currency_id',
+            'currency_symbol'=>'required|unique:currencies,currency_symbol,'.$id.',currency_id',
+            'status'=>'required|in:pending,publish',
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
@@ -112,10 +107,10 @@ class BlogController extends DashboardController
             ],422);
         }
         try {
-            $this->blog->update($request, $id);
+            $this->currency->update($request, $id);
 
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in updating Blogs' . $exception->getMessage());
+            throw new  \PDOException('Error in updating currency' . $exception->getMessage());
         }
         return response()->json([
             'status' => 'success',
@@ -132,14 +127,13 @@ class BlogController extends DashboardController
     public function destroy($id)
     {
         try {
-            $this->blog->delete($id);
+            $this->currency->delete($id);
         } catch (\Exception $exception) {
-            throw new  \PDOException('Error in deleting Joblevel' . $exception->getMessage());
+            throw new  \PDOException('Error in deleting currency' . $exception->getMessage());
         }
         return response()->json([
             'status' => 'success',
             'message' => 'Deleted successfully',
         ], 200);
     }
-
 }

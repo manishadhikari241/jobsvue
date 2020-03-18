@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import settings from './modules/settings';
-import jobs from './modules/jobs';
-import employer from './modules/employer';
+import settings from './dashboard/settings';
+import jobs from './dashboard/jobs';
+import employer from './dashboard/employer';
 
 Vue.use(Vuex);
 

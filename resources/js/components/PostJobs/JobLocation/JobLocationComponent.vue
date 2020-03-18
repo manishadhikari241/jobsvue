@@ -69,7 +69,7 @@
 </template>
 
 <script>
-    import LocationDatatableComponent from "./JobLevel/JobLevelDatatableComponent";
+    import LocationDatatableComponent from "../JobLevel/JobLevelDatatableComponent";
 
     export default {
         components: {LocationDatatableComponent},

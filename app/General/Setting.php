@@ -8,7 +8,6 @@
 
 namespace App\General;
 
-
 use App\Model\Settings;
 use function GuzzleHttp\Psr7\build_query;
 use Illuminate\Support\Facades\File;

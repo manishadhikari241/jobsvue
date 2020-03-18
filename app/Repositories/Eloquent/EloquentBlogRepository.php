@@ -16,8 +16,7 @@ class EloquentBlogRepository extends AbstractRepository implements BlogRepositor
 
     public function getAll()
     {
-
-        $blog=$this->entity()::all()->first()->categories;
+        $blog=$this->entity()::all();
         return $blog;
     }
 

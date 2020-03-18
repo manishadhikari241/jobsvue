@@ -37,6 +37,9 @@
                     </template>
 
                     <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>mdi-bank-outline</v-icon>
+                        </v-list-item-action>
                         <v-list-item-content>
                             <v-list-item-title>
                                 <router-link to="/admins/jobLevel">Job Level</router-link>
@@ -44,8 +47,11 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item link>
-
+                        <v-list-item-action>
+                            <v-icon>mdi-bank-outline</v-icon>
+                        </v-list-item-action>
                         <v-list-item-content>
+
                             <v-list-item-title>
                                 <router-link to="/admins/jobTypes">Job Types</router-link>
                             </v-list-item-title>
@@ -54,6 +60,27 @@
                     <v-list-item link>
 
                         <v-list-item-content>
+
+                            <v-list-item-title>
+                                <router-link to="/admins/jobCurrency">Job Currency</router-link>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item link>
+
+                        <v-list-item-content>
+
+                            <v-list-item-title>
+                                <router-link to="/admins/jobLocation">Job Location</router-link>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+
+                    <v-list-item link>
+
+                        <v-list-item-content>
+
                             <v-list-item-title>
                                 <router-link to="/admins/postjobs">Post Jobs</router-link>
                             </v-list-item-title>
@@ -76,6 +103,14 @@
                         <v-list-item-content>
                             <v-list-item-title>
                                 <router-link to="/admins/company_packages">Company Packages</router-link>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item link>
+
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                <router-link to="/admins/employer_cities">Employer Cities</router-link>
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>

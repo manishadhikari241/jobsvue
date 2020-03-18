@@ -3127,6 +3127,274 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "EmployerCityComponent",
+  data: function data() {
+    return {
+      'status': [{
+        'status': 'Pending',
+        'value': 'pending'
+      }, {
+        'status': 'Publish',
+        'value': 'publish'
+      }],
+      dialog: this.$store.state.employer.dialog,
+      'employerCityData': {
+        'city_name': '',
+        'zip_code': '',
+        'status': ''
+      }
+    };
+  },
+  methods: {
+    addEmployerCity: function addEmployerCity() {
+      var _this = this;
+
+      this.$store.dispatch('employer/addEmployerCity', this.employerCityData).then(function () {
+        this.dialog = this.$store.state.employer.dialog;
+      }.bind(this))["finally"](function () {
+        setTimeout(function () {
+          _this.dialog = _this.$store.state.employer.dialog;
+
+          _this.$store.dispatch('employer/getEmployerCity');
+        }, 500);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editModal: this.$store.state.jobs.editJobLevelModal,
+      'status': [{
+        'status': 'Pending',
+        'value': 'pending'
+      }, {
+        'status': 'Publish',
+        'value': 'publish'
+      }],
+      search: '',
+      headers: [{
+        text: 'City Name',
+        align: 'left',
+        sortable: false,
+        value: 'city_name'
+      }, {
+        text: 'Zip Code',
+        align: 'left',
+        sortable: false,
+        value: 'zip_code'
+      }, {
+        text: 'Status',
+        align: 'left',
+        sortable: false,
+        value: 'status'
+      }, {
+        text: 'Actions',
+        value: 'actions'
+      }]
+    };
+  },
+  mounted: function mounted() {
+    this.$store.dispatch('employer/getEmployerCity');
+  },
+  computed: {
+    getEmployerCity: function getEmployerCity() {
+      return this.$store.state.employer.employer_city.city;
+    },
+    getEditEmployerCity: function getEditEmployerCity() {
+      return this.$store.state.employer.editEmployerCity;
+    }
+  },
+  methods: {
+    close: function close() {
+      this.editModal = false;
+    },
+    deleteEmployerCity: function deleteEmployerCity(id) {
+      this.$dialog.confirm('Are you Sure You want to Delete?').then(function () {
+        this.$store.dispatch('employer/deleteEmployerCity', id).then(function () {
+          var _this = this;
+
+          setTimeout(function () {
+            _this.$store.dispatch('employer/getEmployerCity');
+          }, 600);
+        }.bind(this));
+      }.bind(this));
+    },
+    editEmployerCity: function editEmployerCity(id) {
+      this.editModal = true;
+      this.$store.dispatch('employer/editEmployerCity', id).then(function () {// setTimeout(() => {
+        //     this.editModal= this.$store.state.employer.editEmployerCityModal;
+        // },600)
+      }.bind(this));
+    },
+    updateEmployerCity: function updateEmployerCity() {
+      var _this2 = this;
+
+      this.$store.dispatch('employer/updateEmployerCity', this.getEditEmployerCity).then(function () {
+        this.dialog = this.$store.state.employer.dialog; // this.editModal = this.$store.state.jobs.editJobTypeModal;
+      }.bind(this))["finally"](function () {
+        setTimeout(function () {
+          _this2.dialog = _this2.$store.state.employer.dialog;
+
+          _this2.$store.dispatch('employer/getEmployerCity');
+
+          _this2.editModal = false;
+        }, 900);
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Login/LoginComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Login/LoginComponent.vue?vue&type=script&lang=js& ***!
@@ -3159,6 +3427,105 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "LoginComponent"
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "JobCurrencyComponent",
+  data: function data() {
+    return {
+      currencyRules: [function (v) {
+        return !!v || 'Please insert currency name';
+      }],
+      'status': [{
+        'status': 'Pending',
+        'value': 'pending'
+      }, {
+        'status': 'Publish',
+        'value': 'publish'
+      }]
+    };
+  }
 });
 
 /***/ }),
@@ -3423,6 +3790,109 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JobLevel_JobLevelDatatableComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../JobLevel/JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    LocationDatatableComponent: _JobLevel_JobLevelDatatableComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      nameRules: [function (v) {
+        return !!v || 'Name is required';
+      } // v => v.length <= 10 || 'Name must be less than 10 characters',
+      ],
+      emailRules: [function (v) {
+        return !!v || 'E-mail is required';
+      }, function (v) {
+        return /.+@.+/.test(v) || 'E-mail must be valid';
+      }]
+    };
+  },
+  name: "LocationsComponent"
 });
 
 /***/ }),
@@ -3928,6 +4398,41 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -45512,6 +46017,460 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "12" } },
+            [
+              _c(
+                "v-form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.addEmployerCity($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", [
+                        _vm._v(
+                          "\n                        Add Employer City\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-container",
+                            [
+                              _c(
+                                "v-row",
+                                [
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          counter: 30,
+                                          label: "City Name",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.employerCityData.city_name,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.employerCityData,
+                                              "city_name",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "employerCityData.city_name"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          counter: 5,
+                                          label: "Zip Code",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.employerCityData.zip_code,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.employerCityData,
+                                              "zip_code",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "employerCityData.zip_code"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-select", {
+                                        attrs: {
+                                          items: _vm.status,
+                                          name: "status",
+                                          "item-text": "status",
+                                          "item-value": "value",
+                                          label: "Status"
+                                        },
+                                        model: {
+                                          value: _vm.employerCityData.status,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.employerCityData,
+                                              "status",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "employerCityData.status"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { attrs: { type: "submit" } }, [
+                            _vm._v("Add")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("employer-city-datatable"),
+      _vm._v(" "),
+      _c("v-row"),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "hide-overlay": "", persistent: "", width: "300" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            { attrs: { color: "primary", dark: "" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _vm._v("\n                Please stand by\n                "),
+                  _c("v-progress-linear", {
+                    staticClass: "mb-0",
+                    attrs: { indeterminate: "", color: "white" }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-row",
+    [
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.editModal,
+            callback: function($$v) {
+              _vm.editModal = $$v
+            },
+            expression: "editModal"
+          }
+        },
+        [
+          _c(
+            "v-form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.updateEmployerCity($event)
+                }
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [_c("span", { staticClass: "headline" })]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-container",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  counter: 30,
+                                  label: "City Name",
+                                  required: ""
+                                },
+                                model: {
+                                  value: _vm.getEditEmployerCity.city_name,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.getEditEmployerCity,
+                                      "city_name",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "getEditEmployerCity.city_name"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  counter: 5,
+                                  label: "Zip Code",
+                                  required: ""
+                                },
+                                model: {
+                                  value: _vm.getEditEmployerCity.zip_code,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.getEditEmployerCity,
+                                      "zip_code",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "getEditEmployerCity.zip_code"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.status,
+                                  name: "status",
+                                  "item-text": "status",
+                                  "item-value": "value",
+                                  label: "Status"
+                                },
+                                model: {
+                                  value: _vm.getEditEmployerCity.status,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.getEditEmployerCity,
+                                      "status",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "getEditEmployerCity.status"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { text: "", color: "blue darken-1" },
+                          on: { click: _vm.close }
+                        },
+                        [_vm._v("Cancel")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            color: "blue darken-1",
+                            type: "submit",
+                            text: ""
+                          }
+                        },
+                        [_vm._v("Update")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-col",
+        { attrs: { col: "12" } },
+        [
+          _c("v-data-table", {
+            staticClass: "elevation-1",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.getEmployerCity,
+              search: _vm.search
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "item.actions",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.editEmployerCity(item.city_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-icon",
+                      {
+                        attrs: { dark: "", small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteEmployerCity(item.city_id)
+                          }
+                        }
+                      },
+                      [_vm._v("fa fa-trash")]
+                    )
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Login/LoginComponent.vue?vue&type=template&id=1d786705&scoped=true&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Login/LoginComponent.vue?vue&type=template&id=1d786705&scoped=true& ***!
@@ -45565,6 +46524,188 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "12" } },
+            [
+              _c(
+                "v-form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", [
+                        _vm._v(
+                          "\n                        Add Job Currency\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-container",
+                            [
+                              _c(
+                                "v-row",
+                                [
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          counter: 20,
+                                          rules: _vm.currencyRules,
+                                          label: "Currency Name",
+                                          required: ""
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          counter: 1,
+                                          rules: _vm.jobLevelRules,
+                                          label: "Currency Symbol",
+                                          required: ""
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-select", {
+                                        attrs: {
+                                          items: _vm.status,
+                                          name: "status",
+                                          "item-text": "status",
+                                          "item-value": "value",
+                                          label: "Status"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { attrs: { type: "submit" } }, [
+                            _vm._v("Add")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("jobs-level-datatable"),
+      _vm._v(" "),
+      _c("v-row"),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "hide-overlay": "", persistent: "", width: "300" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            { attrs: { color: "primary", dark: "" } },
+            [
+              _c(
+                "v-card-text",
+                [
+                  _vm._v("\n                Please stand by\n                "),
+                  _c("v-progress-linear", {
+                    staticClass: "mb-0",
+                    attrs: { indeterminate: "", color: "white" }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -45955,6 +47096,145 @@ var render = function() {
         ],
         1
       )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "6" } },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [
+                    _vm._v(
+                      "\n                    Add Locations\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-form",
+                        [
+                          _c(
+                            "v-container",
+                            [
+                              _c(
+                                "v-row",
+                                [
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          rules: _vm.nameRules,
+                                          counter: 10,
+                                          label: "Zone",
+                                          required: ""
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          rules: _vm.nameRules,
+                                          counter: 15,
+                                          label: "Last name",
+                                          required: ""
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12", md: "4" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          rules: _vm.emailRules,
+                                          label: "E-mail",
+                                          required: ""
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { col: "12" } },
+            [_c("location-datatable-component")],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-row")
     ],
     1
   )
@@ -46854,6 +48134,12 @@ var render = function() {
                     { attrs: { link: "" } },
                     [
                       _c(
+                        "v-list-item-action",
+                        [_c("v-icon", [_vm._v("mdi-bank-outline")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
                         "v-list-item-content",
                         [
                           _c(
@@ -46879,6 +48165,12 @@ var render = function() {
                     { attrs: { link: "" } },
                     [
                       _c(
+                        "v-list-item-action",
+                        [_c("v-icon", [_vm._v("mdi-bank-outline")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
                         "v-list-item-content",
                         [
                           _c(
@@ -46888,6 +48180,56 @@ var render = function() {
                                 "router-link",
                                 { attrs: { to: "/admins/jobTypes" } },
                                 [_vm._v("Job Types")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    { attrs: { link: "" } },
+                    [
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c(
+                            "v-list-item-title",
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "/admins/jobCurrency" } },
+                                [_vm._v("Job Currency")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    { attrs: { link: "" } },
+                    [
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c(
+                            "v-list-item-title",
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "/admins/jobLocation" } },
+                                [_vm._v("Job Location")]
                               )
                             ],
                             1
@@ -46971,6 +48313,31 @@ var render = function() {
                                 "router-link",
                                 { attrs: { to: "/admins/company_packages" } },
                                 [_vm._v("Company Packages")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    { attrs: { link: "" } },
+                    [
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c(
+                            "v-list-item-title",
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "/admins/employer_cities" } },
+                                [_vm._v("Employer Cities")]
                               )
                             ],
                             1
@@ -104599,7 +105966,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_modules_settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store/modules/settings */ "./resources/js/store/modules/settings.js");
+/* harmony import */ var _store_dashboard_settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store/dashboard/settings */ "./resources/js/store/dashboard/settings.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
@@ -104629,19 +105996,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: 'history',
   routes: _routes_routes__WEBPACK_IMPORTED_MODULE_4__["default"] // short for `routes: routes`
 
-}); // router.beforeResolve((to, from, next) => {
-//     // If this isn't an initial page load.
-//     if (to.name) {
-//         // Start the route progress bar.
-//         NProgress.start()
-//     }
-//     next()
-// });
-// router.afterEach((to, from) => {
-//     // Complete the animation of the route progress bar.
-//     NProgress.done()
-// });
-
+});
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('app', __webpack_require__(/*! ./components/app */ "./resources/js/components/app.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('dashboard-component', __webpack_require__(/*! ./components/DashboardComponent.vue */ "./resources/js/components/DashboardComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('category-component', __webpack_require__(/*! ./components/Category/CategoryComponent.vue */ "./resources/js/components/Category/CategoryComponent.vue")["default"]);
@@ -104650,6 +106005,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('login', __webpack_require_
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('jobs-level-datatable', __webpack_require__(/*! ./components/PostJobs/JobLevel/JobLevelDatatableComponent */ "./resources/js/components/PostJobs/JobLevel/JobLevelDatatableComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('job-type-datatable', __webpack_require__(/*! ./components/PostJobs/JobTypes/JobTypesDatatableComponent */ "./resources/js/components/PostJobs/JobTypes/JobTypesDatatableComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('company-package-datatable', __webpack_require__(/*! ./components/Employer/CompanyPackagesDatatableComponent */ "./resources/js/components/Employer/CompanyPackagesDatatableComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('employer-city-datatable', __webpack_require__(/*! ./components/Employer/EmployerCityDatatableComponent */ "./resources/js/components/Employer/EmployerCityDatatableComponent.vue")["default"]);
 new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   router: router,
   vuetify: _vuetify_vuetify__WEBPACK_IMPORTED_MODULE_5__["default"],
@@ -104983,6 +106339,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Employer/EmployerCityComponent.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/Employer/EmployerCityComponent.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EmployerCityComponent_vue_vue_type_template_id_4b33440e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true& */ "./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true&");
+/* harmony import */ var _EmployerCityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmployerCityComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EmployerCityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EmployerCityComponent_vue_vue_type_template_id_4b33440e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EmployerCityComponent_vue_vue_type_template_id_4b33440e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "4b33440e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Employer/EmployerCityComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmployerCityComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true& ***!
+  \***************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityComponent_vue_vue_type_template_id_4b33440e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityComponent.vue?vue&type=template&id=4b33440e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityComponent_vue_vue_type_template_id_4b33440e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityComponent_vue_vue_type_template_id_4b33440e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Employer/EmployerCityDatatableComponent.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/Employer/EmployerCityDatatableComponent.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EmployerCityDatatableComponent_vue_vue_type_template_id_f6077b90_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true& */ "./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true&");
+/* harmony import */ var _EmployerCityDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmployerCityDatatableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EmployerCityDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EmployerCityDatatableComponent_vue_vue_type_template_id_f6077b90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EmployerCityDatatableComponent_vue_vue_type_template_id_f6077b90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "f6077b90",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Employer/EmployerCityDatatableComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmployerCityDatatableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityDatatableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true& ***!
+  \************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityDatatableComponent_vue_vue_type_template_id_f6077b90_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Employer/EmployerCityDatatableComponent.vue?vue&type=template&id=f6077b90&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityDatatableComponent_vue_vue_type_template_id_f6077b90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmployerCityDatatableComponent_vue_vue_type_template_id_f6077b90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Login/LoginComponent.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/Login/LoginComponent.vue ***!
@@ -105047,6 +106541,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_template_id_1d786705_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_template_id_1d786705_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JobCurrencyComponent_vue_vue_type_template_id_050ebdee_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true& */ "./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true&");
+/* harmony import */ var _JobCurrencyComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobCurrencyComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JobCurrencyComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JobCurrencyComponent_vue_vue_type_template_id_050ebdee_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobCurrencyComponent_vue_vue_type_template_id_050ebdee_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "050ebdee",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobCurrencyComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobCurrencyComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobCurrencyComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true&":
+/*!**************************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true& ***!
+  \**************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobCurrencyComponent_vue_vue_type_template_id_050ebdee_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue?vue&type=template&id=050ebdee&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobCurrencyComponent_vue_vue_type_template_id_050ebdee_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobCurrencyComponent_vue_vue_type_template_id_050ebdee_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -105185,6 +106748,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLevelDatatableComponent_vue_vue_type_template_id_7a46ea5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _JobLocationComponent_vue_vue_type_template_id_0b3d09a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true& */ "./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true&");
+/* harmony import */ var _JobLocationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JobLocationComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _JobLocationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _JobLocationComponent_vue_vue_type_template_id_0b3d09a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _JobLocationComponent_vue_vue_type_template_id_0b3d09a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "0b3d09a6",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLocationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLocationComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLocationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true&":
+/*!**************************************************************************************************************************!*\
+  !*** ./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true& ***!
+  \**************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLocationComponent_vue_vue_type_template_id_0b3d09a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue?vue&type=template&id=0b3d09a6&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLocationComponent_vue_vue_type_template_id_0b3d09a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_JobLocationComponent_vue_vue_type_template_id_0b3d09a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -105568,6 +107200,14 @@ var routes = [{
     name: 'jobTypes',
     component: __webpack_require__(/*! ../components/PostJobs/JobTypes/JobTypesComponent */ "./resources/js/components/PostJobs/JobTypes/JobTypesComponent.vue")["default"]
   }, {
+    path: 'jobCurrency',
+    name: 'jobCurrency',
+    component: __webpack_require__(/*! ../components/PostJobs/JobCurrency/JobCurrencyComponent */ "./resources/js/components/PostJobs/JobCurrency/JobCurrencyComponent.vue")["default"]
+  }, {
+    path: 'jobLocation',
+    name: 'jobLocation',
+    component: __webpack_require__(/*! ../components/PostJobs/JobLocation/JobLocationComponent */ "./resources/js/components/PostJobs/JobLocation/JobLocationComponent.vue")["default"]
+  }, {
     path: 'postjobs',
     name: 'postjobs',
     component: __webpack_require__(/*! ../components/PostJobs/PostJobsComponent */ "./resources/js/components/PostJobs/PostJobsComponent.vue")["default"]
@@ -105575,6 +107215,10 @@ var routes = [{
     path: 'company_packages',
     name: 'company_packages',
     component: __webpack_require__(/*! ../components/Employer/CompanyPackagesComponent */ "./resources/js/components/Employer/CompanyPackagesComponent.vue")["default"]
+  }, {
+    path: 'employer_cities',
+    name: 'employer_cities',
+    component: __webpack_require__(/*! ../components/Employer/EmployerCityComponent */ "./resources/js/components/Employer/EmployerCityComponent.vue")["default"]
   }]
 }, {
   path: '/login',
@@ -105584,10 +107228,10 @@ var routes = [{
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/employer.js":
-/*!************************************************!*\
-  !*** ./resources/js/store/modules/employer.js ***!
-  \************************************************/
+/***/ "./resources/js/store/dashboard/employer.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/dashboard/employer.js ***!
+  \**************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -105600,7 +107244,10 @@ var state = {
   company_packages: '',
   dialog: false,
   editPackageModal: false,
-  edit_company_packages: ''
+  edit_company_packages: '',
+  employer_city: '',
+  editEmployerCity: '',
+  editEmployerCityModal: false
 };
 var mutations = {
   initial_load: function initial_load(state, payloads) {
@@ -105620,6 +107267,19 @@ var mutations = {
   },
   update_company_package: function update_company_package(state, payloads) {
     state.editPackageModal = false;
+  },
+  employer_city_added: function employer_city_added() {
+    state.dialog = false;
+  },
+  get_employer_city: function get_employer_city(state, payloads) {
+    state.employer_city = payloads.data;
+  },
+  edit_employer_city: function edit_employer_city(state, payloads) {
+    state.editEmployerCity = payloads.data.city;
+    state.editEmployerCityModal = true;
+  },
+  update_employer_city: function update_employer_city(state, payloads) {
+    state.editEmployerCityModal = false;
   }
 };
 var actions = {
@@ -105710,6 +107370,79 @@ var actions = {
         state.editPackageModal = true;
       }
     });
+  },
+
+  /*
+  Employer City starts
+   */
+  addEmployerCity: function addEmployerCity(_ref6, payloads) {
+    var commit = _ref6.commit;
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      url: '/api/admin/city',
+      data: payloads,
+      method: "POST"
+    }).then(function (response) {
+      commit('employer_city_added');
+      toastr.success(response.data.message);
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        // console.log(error.response.data.errors);
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+      }
+    });
+  },
+  getEmployerCity: function getEmployerCity(_ref7, payloads) {
+    var commit = _ref7.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      url: '/api/admin/city',
+      method: 'GET'
+    }).then(function (response) {
+      commit('get_employer_city', response);
+    })["catch"](function (error) {});
+  },
+  deleteEmployerCity: function deleteEmployerCity(_ref8, payloads) {
+    var commit = _ref8.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      url: "/api/admin/city/".concat(payloads),
+      method: 'DELETE'
+    }).then(function (response) {
+      toastr.success(response.data.message);
+    })["catch"](function (error) {});
+  },
+  editEmployerCity: function editEmployerCity(_ref9, payloads) {
+    var commit = _ref9.commit;
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'GET',
+      url: "/api/admin/city/".concat(payloads)
+    }).then(function (response) {
+      commit('edit_employer_city', response);
+    });
+  },
+  updateEmployerCity: function updateEmployerCity(_ref10, payloads) {
+    var commit = _ref10.commit;
+    console.log(payloads);
+    commit('initial_load');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      method: 'PATCH',
+      url: "/api/admin/city/".concat(payloads.city_id),
+      data: payloads
+    }).then(function (response) {
+      commit('stop_load');
+      commit('update_employer_city');
+      toastr.success(response.data.message);
+    })["catch"](function (error) {
+      if (error.response.status == 422) {
+        $.each(error.response.data.errors, function (key, value) {
+          toastr.warning(value);
+        });
+        commit('stop_load');
+        state.editEmployerCityModal = true;
+      }
+    });
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -105721,10 +107454,10 @@ var actions = {
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/jobs.js":
-/*!********************************************!*\
-  !*** ./resources/js/store/modules/jobs.js ***!
-  \********************************************/
+/***/ "./resources/js/store/dashboard/jobs.js":
+/*!**********************************************!*\
+  !*** ./resources/js/store/dashboard/jobs.js ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -105946,10 +107679,10 @@ var actions = {
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/settings.js":
-/*!************************************************!*\
-  !*** ./resources/js/store/modules/settings.js ***!
-  \************************************************/
+/***/ "./resources/js/store/dashboard/settings.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/dashboard/settings.js ***!
+  \**************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -106025,9 +107758,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _modules_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/settings */ "./resources/js/store/modules/settings.js");
-/* harmony import */ var _modules_jobs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/jobs */ "./resources/js/store/modules/jobs.js");
-/* harmony import */ var _modules_employer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/employer */ "./resources/js/store/modules/employer.js");
+/* harmony import */ var _dashboard_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dashboard/settings */ "./resources/js/store/dashboard/settings.js");
+/* harmony import */ var _dashboard_jobs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dashboard/jobs */ "./resources/js/store/dashboard/jobs.js");
+/* harmony import */ var _dashboard_employer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dashboard/employer */ "./resources/js/store/dashboard/employer.js");
 
 
 
@@ -106036,9 +107769,9 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
-    settings: _modules_settings__WEBPACK_IMPORTED_MODULE_2__["default"],
-    jobs: _modules_jobs__WEBPACK_IMPORTED_MODULE_3__["default"],
-    employer: _modules_employer__WEBPACK_IMPORTED_MODULE_4__["default"]
+    settings: _dashboard_settings__WEBPACK_IMPORTED_MODULE_2__["default"],
+    jobs: _dashboard_jobs__WEBPACK_IMPORTED_MODULE_3__["default"],
+    employer: _dashboard_employer__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 });
 

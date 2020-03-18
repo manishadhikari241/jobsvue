@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Blogs;
+namespace App\Http\Requests\Admin\Jobs;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class BlogCategoryRequest extends FormRequest
+class CurrencyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,8 @@ class BlogCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'blog_category_name'=>'required|unique:blog_categories,blog_category_name',
+            'currency_name'=>'required|unique:currencies,currency_name',
+            'currency_symbol'=>'required|unique:currencies,currency_symbol',
             'status'=>'required|in:pending,publish',
         ];
     }

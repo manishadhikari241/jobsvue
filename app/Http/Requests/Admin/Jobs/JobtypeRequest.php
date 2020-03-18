@@ -29,7 +29,7 @@ class JobtypeRequest extends FormRequest
     {
         return [
             'job_type_name'=>'required|unique:jobtypes,job_type_name',
-            'status'=>'required'
+            'status'=>'required',
         ];
     }
 

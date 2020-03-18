@@ -28,6 +28,16 @@ const routes = [
                 component: require('../components/PostJobs/JobTypes/JobTypesComponent').default
             },
             {
+                path: 'jobCurrency',
+                name: 'jobCurrency',
+                component: require('../components/PostJobs/JobCurrency/JobCurrencyComponent').default
+            },
+            {
+                path: 'jobLocation',
+                name: 'jobLocation',
+                component: require('../components/PostJobs/JobLocation/JobLocationComponent').default
+            },
+            {
                 path: 'postjobs',
                 name: 'postjobs',
                 component: require('../components/PostJobs/PostJobsComponent').default
@@ -36,6 +46,11 @@ const routes = [
                 path: 'company_packages',
                 name: 'company_packages',
                 component: require('../components/Employer/CompanyPackagesComponent').default
+            },
+            {
+                path: 'employer_cities',
+                name: 'employer_cities',
+                component: require('../components/Employer/EmployerCityComponent').default
             }
 
         ]

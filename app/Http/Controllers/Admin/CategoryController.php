@@ -7,6 +7,7 @@ use App\Http\Requests\JobsCategory;
 use App\Model\Category;
 use App\Repositories\Eloquent\EloquentJobsCategoryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends DashboardController
