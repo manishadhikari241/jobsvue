@@ -33,12 +33,15 @@ class EloquentJobVacancyRepository extends AbstractRepository implements JobVaca
         $data['valid_date']=$request->valid_date;
         $data['status']=$request->status;
         $data['viewed']=$request->viewed;
-        $data['job_location']=$request->job_location;
+        $data['location_id']=$request->location_id;
+        $data['applicants']=$request->applicants;
         $create=$this->entity()::create($data);
         return $create;
     }
 
-    public function getAll(){
-
+    public function getAll()
+    {
+       $all=$this->entity()::all();
+       return $all;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Jobs\JobvacancyRequest;
+use App\Http\Resources\Vacancy;
 use App\Repositories\Eloquent\EloquentJobVacancyRepository;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class JobVacancyController extends DashboardController
 
     public function index()
     {
-        //
+        $all=$this->vacancy->getAll();
+          return Vacancy::collection($all);
     }
 
     /**

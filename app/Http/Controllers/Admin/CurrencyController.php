@@ -56,7 +56,7 @@ class CurrencyController extends DashboardController
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Blog Successfully Added'
+            'message' => 'Currency Successfully Added'
         ], 200);
     }
 

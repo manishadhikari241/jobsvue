@@ -64,7 +64,6 @@ class CategoryController extends DashboardController
     {
         try {
             $this->category->store($request);
-
         } catch (\Exception $exception) {
             throw new  \PDOException('Error in saving Category' . $exception->getMessage());
         } finally {
@@ -124,7 +123,7 @@ class CategoryController extends DashboardController
             'category_name' => 'required|min:2|max:20|unique:categories,category_name,' . $id
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()->all()],422);
+            return response()->json(['errors' => $validator->errors()->all()], 422);
         }
         try {
             $this->category->update_product($request, $id);

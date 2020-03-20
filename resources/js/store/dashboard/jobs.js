@@ -279,13 +279,12 @@ const actions = {
         });
     },
     getJobCurrency({commit}) {
-        commit('initial_load');
         axios({
             method: 'GET',
             url: '/api/admin/currency'
         }).then(function (response) {
             commit('get_jobs_currency', response)
-        }.bind(this)).catch(error => {
+        }).catch(error => {
 
         });
     },

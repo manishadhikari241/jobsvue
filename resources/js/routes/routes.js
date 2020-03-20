@@ -58,6 +58,10 @@ const routes = [
     {
         path: '/login', component: require('../components/Login/LoginComponent').default,
     },
+    {
+        path: '/', component: require('../components/front').default,
+
+    }
 
 
 ];

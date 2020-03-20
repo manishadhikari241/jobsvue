@@ -11,6 +11,7 @@ try {
 
     require('bootstrap');
     require('admin-lte');
+    require('../../node_modules/frontend/js/custom1');
     window.toastr = require('toastr');
 
 } catch (e) {
