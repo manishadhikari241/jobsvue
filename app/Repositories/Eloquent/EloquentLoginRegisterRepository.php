@@ -28,12 +28,11 @@ class EloquentLoginRegisterRepository extends AbstractRepository implements Logi
         $user->verified = 0;
         $user->password = bcrypt($request->password);
         $user->save();
-//        dd($user);
-
+          dd($user);
         $http = new GuzzleHttp\Client;
 
         $response = $http->post(url('oauth/token'), [
-            'form_params' => [
+            'json'=> [
                 'grant_type' => 'password',
                 'client_id' => '2',
                 'client_secret' => DB::table('oauth_clients')->where('id','=',2)->first()->secret,
@@ -42,7 +41,6 @@ class EloquentLoginRegisterRepository extends AbstractRepository implements Logi
                 'scope' => '',
             ],
         ]);
-
 
         return json_decode((string)$response->getBody(), true);
 
