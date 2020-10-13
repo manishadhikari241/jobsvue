@@ -118,7 +118,8 @@
 
                         <v-list-item-content>
                             <v-list-item-title>
-                                Employer Jobs Requests
+                                <router-link to="/admins/employer_jobs_requests">Employer Jobs Requests</router-link>
+
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>

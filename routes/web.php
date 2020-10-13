@@ -25,5 +25,5 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
 
 Route::get('/{vue_capture}', function () {
-    return view('admin.dashboard');
+    return view('app');
 })->where('vue_capture', '[\/\w\.-]*');

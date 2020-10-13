@@ -2,20 +2,14 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 //data tables
 @import url('https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css');
-
-
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-@import "~admin-lte";
 @import "~admin-lte/plugins/fontawesome-free/css/all.css";
 @import "~toastr";
 @import "~vuejs-dialog/dist/vuejs-dialog.min.css";
-@import "~frontend/css/style.css";
-@import "~frontend/css/bootstrap.css";
-@import "~frontend/css/responsive.css";
-@import "~frontend/vendor/OwlCarousel/assets/owl.carousel.css";
-@import "~frontend/vendor/OwlCarousel/assets/owl.theme.default.css";
-@import "~frontend/vendor/bootstrap/css/bootstrap.min.css";
+/*
+frontend css
+ */
+

@@ -1,4 +1,4 @@
-<?php
+z<?php
 
 namespace App\Http\Controllers\Admin;
 
@@ -20,18 +20,19 @@ class CompanyPackageController extends DashboardController
     public function __construct(EloquentCompanyPackageRepository $package)
     {
         parent::__construct();
-        $this->package=$package;
+        $this->package = $package;
     }
 
     public function index()
     {
-        $pack=$this->package->getAll();
+        $pack = $this->package->getAll();
 
         return response()->json([
-            'status' =>'success',
-            'company_package'=>$pack
-        ],200);
+            'status' => 'success',
+            'company_package' => $pack
+        ], 200);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,7 +46,7 @@ class CompanyPackageController extends DashboardController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(CompanyPackageRequest $request)
@@ -64,23 +65,23 @@ class CompanyPackageController extends DashboardController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $pack=$this->package->getById($id);
+        $pack = $this->package->getById($id);
 
         return response()->json([
-            'status' =>'success',
-            'company_package'=>$pack
-        ],200);
+            'status' => 'success',
+            'company_package' => $pack
+        ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -91,25 +92,25 @@ class CompanyPackageController extends DashboardController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'package_name'=>'required|unique:company_packages,package_name,'.$id.',packages_id',
-            'price'=>'required',
-            'duration'=>'required|in:monthly,yearly',
-            'features'=>'required',
-            'status'=>'required|in:pending,publish'
+            'package_name' => 'required|unique:company_packages,package_name,' . $id . ',packages_id',
+            'price' => 'required',
+            'duration' => 'required|in:monthly,yearly',
+            'features' => 'required',
+            'status' => 'required|in:pending,publish'
         ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json([
                 "errors" => $errors
-            ],422);
+            ], 422);
         }
         try {
             $this->package->update($request, $id);
@@ -125,7 +126,7 @@ class CompanyPackageController extends DashboardController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

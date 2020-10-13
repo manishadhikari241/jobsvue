@@ -10,13 +10,15 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-    require('admin-lte');
-    require('../../node_modules/frontend/js/custom1');
+
     window.toastr = require('toastr');
+
 
 } catch (e) {
 }
-
+// require('../../node_modules/frontend/vendor/OwlCarousel/owl.carousel');
+//
+// require('../../node_modules/frontend/js/custom1');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

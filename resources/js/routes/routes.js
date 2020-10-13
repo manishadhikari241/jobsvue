@@ -51,6 +51,11 @@ const routes = [
                 path: 'employer_cities',
                 name: 'employer_cities',
                 component: require('../components/Employer/EmployerCityComponent').default
+            },
+            {
+                path: 'employer_jobs_requests',
+                name: 'employer_jobs_requests',
+                component: require('../components/Employer/EmployerJobRequest').default
             }
 
         ]

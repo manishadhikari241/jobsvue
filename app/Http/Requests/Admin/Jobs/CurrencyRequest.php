@@ -37,6 +37,7 @@ class CurrencyRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
+        return redirect()->back();
         throw new HttpResponseException(response()->json(['errors' => $errors
         ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }

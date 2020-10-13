@@ -14,6 +14,3 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
 
-// mix.scripts([
-//     "https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" ,
-// ], 'public/js');

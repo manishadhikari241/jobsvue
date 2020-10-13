@@ -34,7 +34,7 @@ class EloquentLoginRegisterRepository extends AbstractRepository implements Logi
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => '2',
-                'client_secret' => DB::table('oauth_clients')->where('id','=',2)->first()->secret,
+                'client_secret' => DB::table('oauth_clients')->where('id', '=', 2)->first()->secret,
                 'username' => $request->email,
                 'password' => $request->password,
                 'scope' => '',

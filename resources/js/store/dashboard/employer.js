@@ -73,8 +73,8 @@ const actions = {
         }).then(function (response) {
             if (response.data.status == 'success') {
                 toastr.success(response.data.message);
-
                 commit('company_package_added');
+                commit('stop_load');
             }
         }).catch(error => {
             if (error.response.status == 422) {
